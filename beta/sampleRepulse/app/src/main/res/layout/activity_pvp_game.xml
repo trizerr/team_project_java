@@ -37,6 +37,13 @@
             android:layout_gravity="center"
             android:background="@drawable/ball" />
 
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:text="vgrvvgrvg"
+            android:rotation="270"
+            android:padding="0dp"/>
 
     </FrameLayout>
 

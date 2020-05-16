@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
                 PvPGameStart();
             }
         });
-        PvPGameStart();
-        BotGameStart();
-
     }
 
 //    @Override
