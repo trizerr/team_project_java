@@ -8,8 +8,8 @@ import java.util.TimerTask;
 
 public class Ball {
     public float ballX, ballY;
-    public int ballXSpeed = 0;
-    public int ballYSpeed = 10;
+    public int ballXSpeed = 5; // change x position
+    public int ballYSpeed = 10; // change y position
     public int ballDirectionX = 1;
     public int ballDirectionY = 1;
     private int ballSize;
@@ -36,7 +36,7 @@ public class Ball {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
-            public void run() {
+            public void run() { // move the ball every 20 ms
                 if (ballMoving) {
                     move();
                 }
@@ -51,18 +51,13 @@ public class Ball {
         ballY += ballYSpeed * ballDirectionY;
 
         if (ballX <= 0){
-            ballDirectionX = 1;
-//            ballX += ballXSpeed * ballDirectionX;
+            ballDirectionX = 1; // change x direction
         }else if(ballX >= screenWidth - ballSize){
-            ballDirectionX = -1;
-//            ballX += ballXSpeed * ballDirectionX;
+            ballDirectionX = -1; //change x direction
         }else if(ballY <= 0){
-            ballDirectionY = 1;
-//            ballY += ballYSpeed * ballDirectionY;
-            //ballMoving = false;
+            ballDirectionY = 1; // collision with bottom(endgame)
         }else if(ballY >= screenHeight + ballSize){
-            ballDirectionY = -1;
-//            ballY += ballYSpeed * ballDirectionY;
+            ballDirectionY = -1; //collision with top(endgame)
         }
 
         System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);
@@ -71,23 +66,20 @@ public class Ball {
         ball.setY(ballY);
     }
 
-    public void hitCheck(){
-//        int playerTopX = playerTop.pl
+    public void hitCheck(){ // check ball collision with players
         System.out.println("hitCheck");
-        if (ballX >= playerBottom.playerX &&
+        if (ballX + ballSize >= playerBottom.playerX &&
                 ballX <= playerBottom.playerX + playerBottom.plateWidth &&
                 ballY <= screenHeight + ballSize && ballY >= screenHeight)
         {
             ballDirectionY = -1;
-//            ballY += ballYSpeed * ballDirectionY;
         }
         else if(ballX <= playerTop.playerX &&
                 ballX >= playerTop.playerX - playerTop.plateWidth &&
                 ballY <= ballSize && ballY >= 0)
         {
             ballDirectionY = 1;
-//            ballY += ballYSpeed * ballDirectionY;
-            System.out.println("else");
+            System.out.println(" hitCheck else");
         }
     }
 }

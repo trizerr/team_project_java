@@ -10,15 +10,15 @@ import java.util.TimerTask;
 
 
 public class Player {
-    public float playerX;
-    private ImageView player;
-    private Drawable plate;
+    public float playerX; // player position X
+    private ImageView player; // player image main
+    private Drawable plate; // player plate(for plate values)
     protected int plateWidth, plateHeight;
     private int screenWidth, screenHeight;
 
-    public int plateDirection = 1;
+    public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
     private int plateSpeed = 10;
-    public boolean plateMove = false;
+    public boolean plateMove = false; // check whether plate need moving
     private Timer timer;
 
     public Player(ImageView player, Drawable plate, int screenWidth, int screenHeight){
@@ -29,12 +29,12 @@ public class Player {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        playerX = (float)(screenWidth / 2);
+        playerX = (float)(screenWidth / 2); // set player start position
 
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
-            public void run() {
+            public void run() { // call move() every 20ms
                 if (plateMove) {
                     move();
                 }
@@ -42,16 +42,16 @@ public class Player {
         }, 0, 20);
 
     }
-    public void move(){
+    public void move(){ // move the player
         playerX += plateSpeed * plateDirection;
-        if (playerX < 0) {
+        if (playerX < 0) { // check wall collision
             System.out.println("Collision");
             System.out.println("X" + playerX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
             playerX = 0;
-        } else if( playerX > screenWidth - plateWidth){
+        } else if( playerX > screenWidth - plateWidth){ // check wall collision
             playerX = screenWidth - plateWidth;
         } else{
-            player.setX(playerX);
+            player.setX(playerX); // update X position
             System.out.println("X" + playerX);
         }
     }
