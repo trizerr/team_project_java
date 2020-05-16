@@ -21,7 +21,7 @@ public class Bot {
     public boolean plateMove = false; // check whether plate need moving
     private Timer timer;
 
-    public Player(ImageView player, Drawable plate, int screenWidth, int screenHeight){
+    public Bot(ImageView player, Drawable plate, int screenWidth, int screenHeight){
         this.player = player;
         plateWidth = plate.getIntrinsicWidth();
         plateHeight = plate.getIntrinsicHeight();

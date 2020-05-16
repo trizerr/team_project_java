@@ -76,7 +76,7 @@ public class Ball {
         {
             ballDirectionY = -1;
         }
-        else if(ballX + ballSize>= playerTop.playerX &&
+        else if(ballX + ballSize >= playerTop.playerX &&
                 ballX <= playerTop.playerX + playerTop.plateWidth &&
                 ballY <= ballSize && ballY >= 0)
         {

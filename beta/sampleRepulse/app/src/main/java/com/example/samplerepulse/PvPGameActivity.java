@@ -20,6 +20,7 @@ public class PvPGameActivity extends AppCompatActivity {
     private Player playerTop, playerBottom;
     private Ball ball;
     private Drawable plate, ballDrawable;
+    private int pointerTop = -1, PointerDown = -1;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
@@ -38,7 +39,7 @@ public class PvPGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pvp_game);
 
-        gameFrame = findViewById(R.id.gameFrame);
+        gameFrame = findViewById(R.id.PvPGameFrame);
 
         playerTopImg = findViewById(R.id.playerTop);
         playerBottomImg = findViewById(R.id.playerBottom);
@@ -66,44 +67,57 @@ public class PvPGameActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int touchPosX = (int) event.getX();
-        int touchPosY = (int) event.getY();
-        boolean playerTopMove = playerTop.plateMove;
+        int pointerIndex = event.getActionIndex();
 
-        if (touchPosY < screenHeight / 2){
-            if(!playerTopMove) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (touchPosX > screenWidth / 2) {
-                        playerTop.plateDirection = 1;
-                    } else {
-                        playerTop.plateDirection = -1;
-                    }
-                    playerTop.plateMove = true;
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_POINTER_DOWN:
+                int touchPosX = (int) event.getX();
+                int touchPosY = (int) event.getY();
+                for (int i = 0; i < event.getPointerCount(); i++) {
+                    System.out.println("Pointer index " + event.getPointerId(i) + " pointerX" );
                 }
-                System.out.println("Top move");
-            }else{
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    playerTop.plateMove = false;
-                }
-            }
-            System.out.println("Top touch");
-        }else if (touchPosY > screenHeight / 2){
-            //if(!playerBottom.plateMove) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (touchPosX > screenWidth / 2) {
-                        playerBottom.plateDirection = 1;
-                    } else {
-                        playerBottom.plateDirection = -1;
+                // Player Top//
+                if (pointerTop == -1){
+                    if(!playerTop.plateMove){
+                        if (event.getY() < screenHeight / 2) {
+                            if (touchPosX > screenWidth / 2) {
+                                playerTop.plateDirection = 1;
+                            } else {
+                                playerTop.plateDirection = -1;
+                            }
+                            playerTop.plateMove = true;
+                            pointerTop = event.getPointerId(event.getActionIndex());
                     }
-                    playerBottom.plateMove = true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                }
+                // Player Bottom //
+                }else if(!playerBottom.plateMove){
+                    if (event.getY() > screenHeight / 2) {
+                        if (touchPosX > screenWidth / 2) {
+                            playerBottom.plateDirection = 1;
+                        } else {
+                            playerBottom.plateDirection = -1;
+                        }
+                        playerBottom.plateMove = true;
+                    }
+                }
+
+                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
+                return true;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
+                touchPosX = (int) event.getX();
+                touchPosY = (int) event.getY();
+                if (event.getY() < screenHeight / 2) {
+                    if (event.getPointerId(event.getActionIndex()) == pointerTop)
+                        playerTop.plateMove = false;
+                }else {
                     playerBottom.plateMove = false;
                 }
-            //}
-            System.out.println("Bottom touch");
+                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
+                return true;
         }
 
-        System.out.println("touch");
         return super.onTouchEvent(event);
     }
 

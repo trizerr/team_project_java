@@ -2,6 +2,7 @@ package com.example.samplerepulse;
 
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import java.util.HashMap;
@@ -55,6 +56,5 @@ public class Player {
            // System.out.println("X" + playerX);
         }
     }
-
 
 }
