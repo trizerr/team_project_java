@@ -45,14 +45,14 @@ public class Player {
     public void move(){ // move the player
         playerX += plateSpeed * plateDirection;
         if (playerX < 0) { // check wall collision
-            System.out.println("Collision");
-            System.out.println("X" + playerX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
+//            System.out.println("Collision");
+//            System.out.println("X" + playerX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
             playerX = 0;
         } else if( playerX > screenWidth - plateWidth){ // check wall collision
             playerX = screenWidth - plateWidth;
         } else{
             player.setX(playerX); // update X position
-            System.out.println("X" + playerX);
+           // System.out.println("X" + playerX);
         }
     }
 

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //PvPGameStart();
+        PvPGameStart();
 //
 //        gameFrame = findViewById(R.id.gameFrame);
 //
