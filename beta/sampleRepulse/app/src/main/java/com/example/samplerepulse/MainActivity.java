@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         botGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BotGameStart();
+
             }
         });
 
@@ -64,11 +64,6 @@ public class MainActivity extends AppCompatActivity {
     public void PvPGameStart(){
         Intent PvP = new Intent(this, PvPGameActivity.class);
         startActivity(PvP);
-    }
-
-    public void BotGameStart(){
-        Intent Bot = new Intent(this, BotGameActivity.class);
-        startActivity(Bot);
     }
 
 
