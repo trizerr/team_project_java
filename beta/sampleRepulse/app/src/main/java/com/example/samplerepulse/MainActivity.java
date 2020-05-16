@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         PvPGameStart();
+        BotGameStart();
 
     }
 
@@ -67,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(PvP);
     }
 
+    public void BotGameStart(){
+        Intent Bot = new Intent(this, BotGameActivity.class);
+        startActivity(Bot);
+    }
 
     public void startGame(){
 

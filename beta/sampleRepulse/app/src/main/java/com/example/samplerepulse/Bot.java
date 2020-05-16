@@ -14,7 +14,7 @@ public class Bot {
     protected int plateWidth, plateHeight;
     private int screenWidth, screenHeight;
 
-    private int ballX = ballPos.ballX;//Влад
+    private float ballX = ballPos.ballX;//Влад
 
     public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
     private int plateSpeed = 10;
