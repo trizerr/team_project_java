@@ -20,7 +20,7 @@ public class PvPGameActivity extends AppCompatActivity {
     private Player playerTop, playerBottom;
     private Ball ball;
     private Drawable plate, ballDrawable;
-    private int pointerTop = -1, PointerDown = -1;
+    private int pointerTop = -1, pointerBottom = -1;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
@@ -78,20 +78,25 @@ public class PvPGameActivity extends AppCompatActivity {
 //                    System.out.println("Pointer index " + event.getPointerId(i) + " pointerX " + event.getX(i) + " pointer Y " + event.getY(i));
 //                }
                 // Player Top//
-                if (pointerTop != event.getPointerId(event.getActionIndex())){
-                    if(!playerTop.plateMove){
-                        if (event.getY() < screenHeight / 2) {
-                            if (touchPosX > screenWidth / 2) {
-                                playerTop.plateDirection = 1;
-                            } else {
-                                playerTop.plateDirection = -1;
-                            }
-                            playerTop.plateMove = true;
+
+
+                    if (event.getY() < screenHeight / 2) {
+                        if (pointerTop == -1){
                             pointerTop = event.getPointerId(event.getActionIndex());
+                        }
+                        if(!playerTop.plateMove && pointerTop == event.getPointerId(event.getActionIndex())){
+                            if (touchPosX > screenWidth / 2) {
+                            playerTop.plateDirection = 1;
+                        } else {
+                            playerTop.plateDirection = -1;
+                        }
+                        playerTop.plateMove = true;
                     }
                 }
+
+                //if ()
                 // Player Bottom //
-                }else if(!playerBottom.plateMove){
+                else if(!playerBottom.plateMove){
                     if (event.getY() > screenHeight / 2) {
                         if (touchPosX > screenWidth / 2) {
                             playerBottom.plateDirection = 1;
@@ -110,10 +115,14 @@ public class PvPGameActivity extends AppCompatActivity {
                 touchPosX = (int) event.getX();
                 touchPosY = (int) event.getY();
                 if (event.getY() < screenHeight / 2) {
-                    if (event.getPointerId(event.getActionIndex()) == pointerTop)
+                    if (event.getPointerId(event.getActionIndex()) == pointerTop) {
                         playerTop.plateMove = false;
+                        pointerTop = -1;
+                    }
                 }else {
+                    if (event.getPointerId(event.getActionIndex()) == pointerBottom)
                     playerBottom.plateMove = false;
+                    pointerBottom = -1;
                 }
                 System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
                 return true;
