@@ -44,6 +44,8 @@ public class Ball {
         }, 0, 20);
     }
 
+    public Ball() {
+    };
 
     public void move(){
         hitCheck();
