@@ -25,7 +25,7 @@ public class PvPGameActivity extends AppCompatActivity {
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
-
+    private int speed = 1;
 
     private boolean plateMove = false;
     private Timer timer, plateTimer;
@@ -71,7 +71,6 @@ public class PvPGameActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();
-
         // get pointer ID
         int pointerId = event.getPointerId(pointerIndex);
 
@@ -79,73 +78,56 @@ public class PvPGameActivity extends AppCompatActivity {
         int maskedAction = event.getActionMasked();
         switch (maskedAction) {
             case MotionEvent.ACTION_DOWN:
-                moveBar(event);
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
                 PointF f = new PointF();
                 f.x = event.getX(pointerIndex);
                 f.y = event.getY(pointerIndex);
                 System.out.println("pointer");
-                moveBarSecond(event, f);
+                moveBar(event, f);
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                PointF second = new PointF();
+                second.x = event.getX(pointerIndex);
+                second.y = event.getY(pointerIndex);
+                System.out.println("pointer");
+                moveBar(event, second);
                 break;
             case MotionEvent.ACTION_UP:
-                moveBar(event);
+                Up(event);
                 break;
             case MotionEvent.ACTION_POINTER_UP:
-                moveBar(event);
+                Up(event);
                 break;
             case MotionEvent.ACTION_CANCEL:
 
             case MotionEvent.ACTION_MOVE:
+                int count = event.getPointerCount();
+                for (int i = 0; i < count; i++) {
+                    PointF up = new PointF();
+                    up.x = event.getX(i);
+                    up.y = event.getY(i);
+                    System.out.println("pointer");
+                    moveBar(event, up);
+                }
+
+                break;
 
         }
 
         return super.onTouchEvent(event);
     }
 
-    public void moveBar(MotionEvent event){
+    public void Up(MotionEvent event){
         int touchPosX = (int) event.getX();
         int touchPosY = (int) event.getY();
-        System.out.println(touchPosX);
-        boolean playerTopMove = playerTop.plateMove;
 
         if (touchPosY < screenHeight / 2){
-            if(!playerTopMove) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
-                    if (touchPosX > screenWidth / 2) {
-                        playerTop.plateDirection = 1;
-                    } else {
-                        playerTop.plateDirection = -1;
-                    }
-                    playerTop.plateMove = true;
-                }
-                System.out.println("Top move");
-            }else{
-                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_POINTER_UP) {
-                    playerTop.plateMove = false;
-                }
-            }
-            System.out.println("Top touch");
-        }else if (touchPosY > screenHeight / 2){
-            //if(!playerBottom.plateMove) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
-                if (touchPosX > screenWidth / 2) {
-                    playerBottom.plateDirection = 1;
-                } else {
-                    playerBottom.plateDirection = -1;
-                }
-                playerBottom.plateMove = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_POINTER_UP) {
-                playerBottom.plateMove = false;
-            }
-            //}
-            System.out.println("Bottom touch");
+            playerTop.plateMove = false;
+        }else{
+            playerBottom.plateMove = false;
         }
-
-        System.out.println("touch");
     }
 
-    public void moveBarSecond(MotionEvent event, PointF f){
+    public void moveBar(MotionEvent event, PointF f){
 
         int touchPosX =(int) f.x;
         int touchPosY = (int) f.y;
@@ -153,38 +135,28 @@ public class PvPGameActivity extends AppCompatActivity {
         boolean playerTopMove = playerTop.plateMove;
 
         if (touchPosY < screenHeight / 2){
-            if(!playerTopMove) {
-                    if (touchPosX > screenWidth / 2) {
-                        playerTop.plateDirection = 1;
-                    } else {
-                        playerTop.plateDirection = -1;
-                    }
-                    playerTop.plateMove = true;
-                System.out.println("Top move");
-            }else{
-                if ( event.getAction() == MotionEvent.ACTION_POINTER_UP) {
-                    playerTop.plateMove = false;
-                }
-            }
-            System.out.println("Top touch");
-        }else if (touchPosY > screenHeight / 2){
-            //if(!playerBottom.plateMove) {
-
-                if (touchPosX > screenWidth / 2) {
-                    playerBottom.plateDirection = 1;
+            if(touchPosX < playerTop.playerLeft || touchPosX > playerTop.pLayerRight){
+                if (touchPosX > playerTop.playerX) {
+                    playerTop.plateDirection = speed;
                 } else {
-                    playerBottom.plateDirection = -1;
+                    playerTop.plateDirection = -speed;
+                }
+                playerTop.plateMove = true;
+            } else{
+                playerTop.plateMove = false;
+            }
+        }else if (touchPosY > screenHeight / 2){
+            if(touchPosX < playerBottom.playerLeft || touchPosX > playerBottom.pLayerRight){
+                if (touchPosX > playerBottom.playerX) {
+                    playerBottom.plateDirection = speed;
+                } else {
+                    playerBottom.plateDirection = -speed;
                 }
                 playerBottom.plateMove = true;
-
-            if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_POINTER_UP) {
+            } else{
                 playerBottom.plateMove = false;
             }
-            //}
-            System.out.println("Bottom touch");
         }
-
-        System.out.println("second touch");
     }
 
     public void startGame(){

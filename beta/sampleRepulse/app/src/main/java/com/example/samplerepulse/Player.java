@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 public class Player {
     public float playerX; // player position X
+    public float playerLeft, pLayerRight,playerCenter;
     private ImageView player; // player image main
     private Drawable plate; // player plate(for plate values)
     protected int plateWidth, plateHeight;
@@ -31,7 +32,9 @@ public class Player {
         this.screenHeight = screenHeight;
 
         playerX = (float)(screenWidth / 2); // set player start position
-
+        this.playerLeft =  playerX-100;
+        this.pLayerRight = playerX+100;
+        this.playerCenter = playerX+100;
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -45,6 +48,8 @@ public class Player {
     }
     public void move(){ // move the player
         playerX += plateSpeed * plateDirection;
+        playerLeft =  playerX-100;
+        pLayerRight = playerX+100;
         if (playerX < 0) { // check wall collision
 //            System.out.println("Collision");
 //            System.out.println("X" + playerX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
@@ -53,6 +58,8 @@ public class Player {
             playerX = screenWidth - plateWidth;
         } else{
             player.setX(playerX); // update X position
+            player.setLeft((int)playerLeft);
+            player.setRight((int)pLayerRight);
            // System.out.println("X" + playerX);
         }
     }
