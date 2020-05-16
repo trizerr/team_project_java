@@ -14,7 +14,7 @@ public class Bot {
     protected int plateWidth, plateHeight;
     private int screenWidth, screenHeight;
 
-    private int ballXDirection = ballPos.ballDirectionX;//Влад
+    private float ballX = ballPos.ballX;//Влад
 
     public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
     private int plateSpeed = 10;
@@ -43,7 +43,7 @@ public class Bot {
 
     }
     public void move(){ // move the player
-        botX += plateSpeed * ballXDirection;
+        botX += ballX;
         if (botX < 0) { // check wall collision
             System.out.println("Collision");
             System.out.println("X" + botX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
