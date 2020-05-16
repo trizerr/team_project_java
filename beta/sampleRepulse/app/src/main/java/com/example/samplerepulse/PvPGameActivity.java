@@ -55,32 +55,54 @@ public class PvPGameActivity extends AppCompatActivity {
         action_flg = true;
         plateMove = false;
 
+
         playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
         playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
         ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
+
+        playerBottom.plateMove = false;
+        playerTop.plateMove = false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int touchPosX = (int) event.getX();
         int touchPosY = (int) event.getY();
-        if (touchPosY > screenHeight / 2){
+        boolean playerTopMove = playerTop.plateMove;
 
-        }else if (touchPosY < screenHeight / 2){
-
-        }
-        if(!plateMove) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (touchPosX > screenWidth / 2) {
-                    playerBottom.plateDirection = 1;
-                } else {
-                    playerBottom.plateDirection = -1;
+        if (touchPosY < screenHeight / 2){
+            if(!playerTopMove) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (touchPosX > screenWidth / 2) {
+                        playerTop.plateDirection = 1;
+                    } else {
+                        playerTop.plateDirection = -1;
+                    }
+                    playerTop.plateMove = true;
                 }
-                playerBottom.plateMove = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                playerBottom.plateMove = false;
+                System.out.println("Top move");
+            }else{
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    playerTop.plateMove = false;
+                }
             }
+            System.out.println("Top touch");
+        }else if (touchPosY > screenHeight / 2){
+            //if(!playerBottom.plateMove) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (touchPosX > screenWidth / 2) {
+                        playerBottom.plateDirection = 1;
+                    } else {
+                        playerBottom.plateDirection = -1;
+                    }
+                    playerBottom.plateMove = true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    playerBottom.plateMove = false;
+                }
+            //}
+            System.out.println("Bottom touch");
         }
+
         System.out.println("touch");
         return super.onTouchEvent(event);
     }

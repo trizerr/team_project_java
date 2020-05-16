@@ -60,26 +60,26 @@ public class Ball {
             ballDirectionY = -1; //collision with top(endgame)
         }
 
-        System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);
+       // System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);
 
         ball.setX(ballX);
         ball.setY(ballY);
     }
 
     public void hitCheck(){ // check ball collision with players
-        System.out.println("hitCheck");
+        //System.out.println("hitCheck");
         if (ballX + ballSize >= playerBottom.playerX &&
                 ballX <= playerBottom.playerX + playerBottom.plateWidth &&
                 ballY <= screenHeight + ballSize && ballY >= screenHeight)
         {
             ballDirectionY = -1;
         }
-        else if(ballX <= playerTop.playerX &&
-                ballX >= playerTop.playerX - playerTop.plateWidth &&
+        else if(ballX + ballSize>= playerTop.playerX &&
+                ballX <= playerTop.playerX + playerTop.plateWidth &&
                 ballY <= ballSize && ballY >= 0)
         {
             ballDirectionY = 1;
-            System.out.println(" hitCheck else");
+           // System.out.println(" hitCheck else");
         }
     }
 }
