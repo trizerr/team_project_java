@@ -74,11 +74,11 @@ public class PvPGameActivity extends AppCompatActivity {
             case MotionEvent.ACTION_POINTER_DOWN:
                 int touchPosX = (int) event.getX();
                 int touchPosY = (int) event.getY();
-                for (int i = 0; i < event.getPointerCount(); i++) {
-                    System.out.println("Pointer index " + event.getPointerId(i) + " pointerX" );
-                }
+//                for (int i = 0; i < event.getPointerCount(); i++) {
+//                    System.out.println("Pointer index " + event.getPointerId(i) + " pointerX " + event.getX(i) + " pointer Y " + event.getY(i));
+//                }
                 // Player Top//
-                if (pointerTop == -1){
+                if (pointerTop != event.getPointerId(event.getActionIndex())){
                     if(!playerTop.plateMove){
                         if (event.getY() < screenHeight / 2) {
                             if (touchPosX > screenWidth / 2) {
@@ -99,6 +99,7 @@ public class PvPGameActivity extends AppCompatActivity {
                             playerBottom.plateDirection = -1;
                         }
                         playerBottom.plateMove = true;
+                        System.out.println("Botttvmtoveitegbh");
                     }
                 }
 

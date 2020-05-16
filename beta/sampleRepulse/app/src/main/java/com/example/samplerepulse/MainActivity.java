@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Button botGame = findViewById(R.id.BotButton);
         botGame.setOnClickListener(new View.OnClickListener() {
             @Override
