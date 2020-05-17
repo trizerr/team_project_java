@@ -102,6 +102,7 @@ public class PvPGameActivity extends AppCompatActivity {
         playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
         ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
 
+
     }
 
     public static PvPGameActivity getInstance(){

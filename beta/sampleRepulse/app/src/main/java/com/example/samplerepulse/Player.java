@@ -23,6 +23,8 @@ public class Player {
     public boolean plateMove = false; // check whether plate need moving
     public Timer timer;
 
+    private String playerName = "";
+
     public Player(ImageView player, Drawable plate, int screenWidth, int screenHeight){
         this.player = player;
         plateWidth = plate.getIntrinsicWidth();
@@ -62,6 +64,10 @@ public class Player {
 //            player.setRight((int)pLayerRight);
            // System.out.println("X" + playerX);
         }
+    }
+
+    public void setName(String name){
+        this.playerName = name;
     }
 
 }

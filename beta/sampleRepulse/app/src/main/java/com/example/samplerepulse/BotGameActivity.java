@@ -19,11 +19,11 @@ import java.util.Timer;
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
     private int screenWidth, screenHeight;
-    private Player playerBottomBot;
+    private Player playerBottom;
     private Bot playerTopBot;
     private Ball ball;
     private Drawable plate, ballDrawable;
-    private int pointerTop = -1, PointerDown = -1;
+    private int pointerTop = -1, pointerDown = -1;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
@@ -35,6 +35,8 @@ public class BotGameActivity extends AppCompatActivity {
 
     private boolean start_flg = false;
     private boolean action_flg = false;
+
+//    Ball ballPos = new Ball();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -57,15 +59,16 @@ public class BotGameActivity extends AppCompatActivity {
         screenHeight = displayMetrics.heightPixels;
 
         action_flg = true;
-        plateMove = false;
-
+        plateMove = true;
 
         playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottomBot = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottomBot, screenWidth, screenHeight);
+        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottom, screenWidth, screenHeight);
 
-        playerBottomBot.plateMove = false;
-        playerTopBot.plateMove = false;
+        playerTopBot.setBall(ball);
+        playerBottom.plateMove = false;
+        playerTopBot.plateMove = true;
+        playerTopBot.startMove();
     }
 
     @Override
@@ -81,27 +84,27 @@ public class BotGameActivity extends AppCompatActivity {
 //                    System.out.println("Pointer index " + event.getPointerId(i) + " pointerX " + event.getX(i) + " pointer Y " + event.getY(i));
 //                }
                 // Player Top//
-                if (pointerTop != event.getPointerId(event.getActionIndex())){
-                    if(!playerTopBot.plateMove){
-                        if (event.getY() < screenHeight / 2) {
-                            if (touchPosX > screenWidth / 2) {
-                                playerTopBot.plateDirection = 1;
-                            } else {
-                                playerTopBot.plateDirection = -1;
-                            }
-                            playerTopBot.plateMove = true;
-                            pointerTop = event.getPointerId(event.getActionIndex());
-                        }
-                    }
-                    // Player Bottom //
-                }else if(!playerBottomBot.plateMove){
+//                if (pointerTop != event.getPointerId(event.getActionIndex())){
+//                if(!playerTopBot.plateMove){
+//                        if (event.getY() < screenHeight / 2) {
+//                            if (touchPosX > screenWidth / 2) {
+//                                playerTopBot.plateDirection = 1;
+//                            } else {
+//                                playerTopBot.plateDirection = -1;
+//                            }
+//                            playerTopBot.plateMove = true;
+//                            pointerTop = event.getPointerId(event.getActionIndex());
+//                        }
+//                    }
+                // Player Bottom //
+                if(!playerBottom.plateMove){
                     if (event.getY() > screenHeight / 2) {
                         if (touchPosX > screenWidth / 2) {
-                            playerBottomBot.plateDirection = 1;
+                            playerBottom.plateDirection = 1;
                         } else {
-                            playerBottomBot.plateDirection = -1;
+                            playerBottom.plateDirection = -1;
                         }
-                        playerBottomBot.plateMove = true;
+                        playerBottom.plateMove = true;
                         System.out.println("Botttvmtoveitegbh");
                     }
                 }
@@ -113,10 +116,10 @@ public class BotGameActivity extends AppCompatActivity {
                 touchPosX = (int) event.getX();
                 touchPosY = (int) event.getY();
                 if (event.getY() < screenHeight / 2) {
-                    if (event.getPointerId(event.getActionIndex()) == pointerTop)
-                        playerTopBot.plateMove = false;
+                    if (event.getPointerId(event.getActionIndex()) == pointerDown)
+                        playerBottom.plateMove = false;
                 }else {
-                    playerBottomBot.plateMove = false;
+                    playerBottom.plateMove = false;
                 }
                 System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
                 return true;
