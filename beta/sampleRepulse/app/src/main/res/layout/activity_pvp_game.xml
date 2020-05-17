@@ -37,13 +37,88 @@
             android:layout_gravity="center"
             android:background="@drawable/ball" />
 
-        <TextView
-            android:layout_width="30dp"
+        <LinearLayout
+            android:id="@+id/scoreTable"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
-            android:text="vgrvvgrvg"
+            android:layout_gravity="end|center"
             android:rotation="270"
-            android:padding="0dp"/>
+            android:padding="0dp">
+
+            <TextView
+                android:id="@+id/playerBottomScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/playerTop"
+                android:textSize="30sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="30sp"
+                />
+            <TextView
+                android:id="@+id/playerTopScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/playerBottom"
+                android:textSize="30sp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/resultBoard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="150dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:background="#fc0000">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="100dp"
+                android:layout_marginHorizontal="50dp"
+                android:orientation="vertical"
+                android:background="#ffffff"
+            >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="You lose"
+                    android:textSize="30sp"/>
+
+                <Button
+                    android:id="@+id/restartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Restart">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/mainMenuButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Exit">
+
+                </Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 

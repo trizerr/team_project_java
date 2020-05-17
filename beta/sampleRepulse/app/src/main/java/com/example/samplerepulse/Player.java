@@ -21,7 +21,7 @@ public class Player {
     public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
     private int plateSpeed = 10;
     public boolean plateMove = false; // check whether plate need moving
-    private Timer timer;
+    public Timer timer;
 
     public Player(ImageView player, Drawable plate, int screenWidth, int screenHeight){
         this.player = player;
@@ -31,9 +31,9 @@ public class Player {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        playerX = (float)(screenWidth / 2); // set player start position
-        this.playerLeft =  playerX-100;
-        this.pLayerRight = playerX+100;
+        playerX = (float)(screenWidth / 2) - plateWidth / 2; // set player start position
+        this.playerLeft =  playerX - plateWidth/2;
+        this.pLayerRight = playerX + plateWidth / 2;
         this.playerCenter = playerX+100;
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -48,8 +48,8 @@ public class Player {
     }
     public void move(){ // move the player
         playerX += plateSpeed * plateDirection;
-        playerLeft =  playerX-100;
-        pLayerRight = playerX+100;
+        playerLeft =  playerX - plateWidth/2;
+        pLayerRight = playerX + plateWidth/2;
         if (playerX < 0) { // check wall collision
 //            System.out.println("Collision");
 //            System.out.println("X" + playerX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
@@ -58,8 +58,8 @@ public class Player {
             playerX = screenWidth - plateWidth;
         } else{
             player.setX(playerX); // update X position
-            player.setLeft((int)playerLeft);
-            player.setRight((int)pLayerRight);
+//            player.setLeft((int)playerLeft);
+//            player.setRight((int)pLayerRight);
            // System.out.println("X" + playerX);
         }
     }

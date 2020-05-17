@@ -3,6 +3,8 @@ package com.example.samplerepulse;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -10,22 +12,37 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class PvPGameActivity extends AppCompatActivity {
+    private static PvPGameActivity instance;
+
     private FrameLayout gameFrame;
+    private LinearLayout resultBoard;
+
     private int screenWidth, screenHeight;
+    private int pointerTop = -1, pointerBottom = -1;
+    private int speed = 1;
+    private int playerTopScore, playerBottomScore;
+
     private Player playerTop, playerBottom;
     private Ball ball;
     private Drawable plate, ballDrawable;
-    private int pointerTop = -1, pointerBottom = -1;
+
+    private TextView playerTopScoreText, playerBottomScoreText;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
-    private int speed = 1;
+
+    private Button mainMenuButton, restartButton;
 
     private boolean plateMove = false;
     private Timer timer, plateTimer;
@@ -40,7 +57,28 @@ public class PvPGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pvp_game);
 
+        instance = this;
+
+        playerTopScoreText = findViewById(R.id.playerTopScore);
+        playerBottomScoreText = findViewById(R.id.playerBottomScore);
+
         gameFrame = findViewById(R.id.PvPGameFrame);
+        resultBoard = findViewById(R.id.resultBoard);
+
+        mainMenuButton = findViewById(R.id.mainMenuButton);
+        restartButton = findViewById(R.id.restartButton);
+        mainMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMainMenu();
+            }
+        });
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restartGame();
+            }
+        });
 
         playerTopImg = findViewById(R.id.playerTop);
         playerBottomImg = findViewById(R.id.playerBottom);
@@ -57,17 +95,18 @@ public class PvPGameActivity extends AppCompatActivity {
         action_flg = true;
         plateMove = false;
 
-
         playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
         playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
         ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
 
-        playerBottom.plateMove = false;
-        playerTop.plateMove = false;
     }
-/*    public static PointF[] touchScreenStartPtArr = new PointF[10];
-    public static PointF[] touchScreenStopPtArr = new PointF[10];
-    public static PointF[] touchScreenCurrPtArr = new PointF[10];*/
+
+    public static PvPGameActivity getInstance(){
+        return instance;
+    }
+    /*    public static PointF[] touchScreenStartPtArr = new PointF[10];
+        public static PointF[] touchScreenStopPtArr = new PointF[10];
+        public static PointF[] touchScreenCurrPtArr = new PointF[10];*/
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();
@@ -159,6 +198,50 @@ public class PvPGameActivity extends AppCompatActivity {
         }
     }
 
+    public void restartGame(){
+        Intent restart = new Intent(this, PvPGameActivity.class); //change it to your main class
+        //the following 2 tags are for clearing the backStack and start fresh
+        restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+        startActivity(restart);
+    }
+
+    public void playerTopScore(){
+        playerTopScore++;
+        playerTopScoreText.setText(Integer.toString(playerTopScore));
+        checkScore();
+    }
+
+    public void playerBottomScore(){
+        playerBottomScore++;
+        System.out.println("Score Bottom " + playerBottomScore);
+        playerBottomScoreText.setText(Integer.toString(playerBottomScore));
+        checkScore();
+    }
+
+    public void checkScore(){
+        if (playerTopScore >= 3){
+            playerBottom.timer.cancel();
+            playerTop.timer.cancel();
+            ball.timer.cancel();
+            resultBoard.setVisibility(View.VISIBLE);
+        }else if(playerBottomScore >= 3){
+            playerBottom.timer.cancel();
+            playerTop.timer.cancel();
+            ball.timer.cancel();
+            resultBoard.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void toMainMenu(){
+        Intent mainMenu = new Intent(this, MainActivity.class);
+        //the following 2 tags are for clearing the backStack and start fresh
+        mainMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mainMenu);
+        finish();
+    }
+
     public void startGame(){
         start_flg = true;
 
@@ -166,3 +249,4 @@ public class PvPGameActivity extends AppCompatActivity {
     }
 
 }
+

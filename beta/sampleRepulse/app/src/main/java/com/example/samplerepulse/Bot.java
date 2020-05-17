@@ -17,13 +17,9 @@ public class Bot {
     private float ballX = ballPos.ballX;//Влад
 
     public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
+
     private int plateSpeed = 10;
-=======
->>>>>>> Stashed changes
->>>>>>> develop
+
     public boolean plateMove = false; // check whether plate need moving
     private Timer timer;
 

@@ -1,5 +1,6 @@
 package com.example.samplerepulse;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -17,17 +19,8 @@ import java.util.Timer;
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
     private int screenWidth, screenHeight;
-<<<<<<< HEAD
     private Player playerBottomBot;
     private Bot playerTopBot;
-=======
-<<<<<<< Updated upstream
-    private Player playerTop, playerBottom;
-=======
-    private Player playerBottomBot;
-    private Bot playerTopBot;
->>>>>>> Stashed changes
->>>>>>> develop
     private Ball ball;
     private Drawable plate, ballDrawable;
     private int pointerTop = -1, PointerDown = -1;
@@ -67,30 +60,12 @@ public class BotGameActivity extends AppCompatActivity {
         plateMove = false;
 
 
-<<<<<<< HEAD
         playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
         playerBottomBot = new Player(playerBottomImg, plate, screenWidth, screenHeight);
         ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottomBot, screenWidth, screenHeight);
 
         playerBottomBot.plateMove = false;
         playerTopBot.plateMove = false;
-=======
-<<<<<<< Updated upstream
-        playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
-
-        playerBottom.plateMove = false;
-        playerTop.plateMove = false;
-=======
-        playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottomBot = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottomBot, screenWidth, screenHeight);
-
-        playerBottomBot.plateMove = false;
-        playerTopBot.plateMove = false;
->>>>>>> Stashed changes
->>>>>>> develop
     }
 
     @Override
@@ -107,23 +82,6 @@ public class BotGameActivity extends AppCompatActivity {
 //                }
                 // Player Top//
                 if (pointerTop != event.getPointerId(event.getActionIndex())){
-<<<<<<< HEAD
-                    if(!playerTopBot.plateMove){
-=======
-<<<<<<< Updated upstream
-                    if(!playerTop.plateMove){
->>>>>>> develop
-                        if (event.getY() < screenHeight / 2) {
-                            if (touchPosX > screenWidth / 2) {
-                                playerTopBot.plateDirection = 1;
-                            } else {
-                                playerTopBot.plateDirection = -1;
-                            }
-<<<<<<< HEAD
-                            playerTopBot.plateMove = true;
-=======
-                            playerTop.plateMove = true;
-=======
                     if(!playerTopBot.plateMove){
                         if (event.getY() < screenHeight / 2) {
                             if (touchPosX > screenWidth / 2) {
@@ -132,29 +90,10 @@ public class BotGameActivity extends AppCompatActivity {
                                 playerTopBot.plateDirection = -1;
                             }
                             playerTopBot.plateMove = true;
->>>>>>> Stashed changes
->>>>>>> develop
                             pointerTop = event.getPointerId(event.getActionIndex());
                         }
                     }
                     // Player Bottom //
-<<<<<<< HEAD
-                }else if(!playerBottomBot.plateMove){
-=======
-<<<<<<< Updated upstream
-                }else if(!playerBottom.plateMove){
->>>>>>> develop
-                    if (event.getY() > screenHeight / 2) {
-                        if (touchPosX > screenWidth / 2) {
-                            playerBottomBot.plateDirection = 1;
-                        } else {
-                            playerBottomBot.plateDirection = -1;
-                        }
-<<<<<<< HEAD
-                        playerBottomBot.plateMove = true;
-=======
-                        playerBottom.plateMove = true;
-=======
                 }else if(!playerBottomBot.plateMove){
                     if (event.getY() > screenHeight / 2) {
                         if (touchPosX > screenWidth / 2) {
@@ -163,21 +102,11 @@ public class BotGameActivity extends AppCompatActivity {
                             playerBottomBot.plateDirection = -1;
                         }
                         playerBottomBot.plateMove = true;
->>>>>>> Stashed changes
->>>>>>> develop
                         System.out.println("Botttvmtoveitegbh");
                     }
                 }
 
-<<<<<<< HEAD
                 System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
-=======
-<<<<<<< Updated upstream
-                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
-=======
-                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
->>>>>>> Stashed changes
->>>>>>> develop
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
@@ -185,15 +114,7 @@ public class BotGameActivity extends AppCompatActivity {
                 touchPosY = (int) event.getY();
                 if (event.getY() < screenHeight / 2) {
                     if (event.getPointerId(event.getActionIndex()) == pointerTop)
-<<<<<<< HEAD
                         playerTopBot.plateMove = false;
-=======
-<<<<<<< Updated upstream
-                        playerTop.plateMove = false;
-=======
-                        playerTopBot.plateMove = false;
->>>>>>> Stashed changes
->>>>>>> develop
                 }else {
                     playerBottomBot.plateMove = false;
                 }

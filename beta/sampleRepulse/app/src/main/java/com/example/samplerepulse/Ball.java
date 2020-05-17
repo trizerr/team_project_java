@@ -1,7 +1,10 @@
 package com.example.samplerepulse;
 
 import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,8 +15,8 @@ public class Ball {
     public int ballYSpeed = 10; // change y position
     public int ballDirectionX = 1;
     public int ballDirectionY = 1;
-    private int ballSize;
-    private Timer timer;
+    public int ballSize;
+    public Timer timer;
     public boolean ballMoving;
     private Drawable ballDrawable;
     private ImageView ball;
@@ -22,6 +25,8 @@ public class Ball {
     Bot playerTopBot;
     int playerMarginVertical = 10;
     public int screenWidth, screenHeight;
+
+    TextView text;
 
     public Ball(ImageView ball, Drawable ballDrawable,Player playerTop, Player playerBottom, int screenWidth, int screenHeight){
         this.ball = ball;
@@ -36,12 +41,18 @@ public class Ball {
         ballY = (float)(screenHeight / 2);
         System.out.println(ballX +" " + ballY);
         timer = new Timer();
+//        PvPGameActivity.getInstance().playerBottomScore();
         timer.schedule(new TimerTask() {
             @Override
             public void run() { // move the ball every 20 ms
-                if (ballMoving) {
-                    move();
-                }
+                PvPGameActivity.getInstance().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ballMoving) {
+                            move();
+                        }
+                    }
+                });
             }
         }, 0, 20);
     }
@@ -69,11 +80,13 @@ public class Ball {
         }, 0, 20);
     }
 
+
     public Ball() {
     };
 
     public void move(){
         hitCheck();
+        checkGoal();
         ballX += ballXSpeed * ballDirectionX;
         ballY += ballYSpeed * ballDirectionY;
 
@@ -87,10 +100,20 @@ public class Ball {
             ballDirectionY = -1; //collision with top(endgame)
         }
 
-        // System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);
+       // System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);
 
         ball.setX(ballX);
         ball.setY(ballY);
+    }
+
+    public void checkGoal(){
+        if(ballY <= 0){
+            PvPGameActivity.getInstance().playerBottomScore();
+            ballDirectionY = 1; // collision with bottom(endgame)
+        }else if(ballY >= screenHeight + ballSize){
+            PvPGameActivity.getInstance().playerTopScore();
+            ballDirectionY = -1; //collision with top(endgame)
+        }
     }
 
     public void move2(){
