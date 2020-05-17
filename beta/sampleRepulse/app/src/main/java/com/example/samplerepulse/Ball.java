@@ -94,10 +94,6 @@ public class Ball {
             ballDirectionX = 1; // change x direction
         }else if(ballX >= screenWidth - ballSize){
             ballDirectionX = -1; //change x direction
-        }else if(ballY <= 0){
-            ballDirectionY = 1; // collision with bottom(endgame)
-        }else if(ballY >= screenHeight + ballSize){
-            ballDirectionY = -1; //collision with top(endgame)
         }
 
        // System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);
@@ -109,10 +105,10 @@ public class Ball {
     public void checkGoal(){
         if(ballY <= 0){
             PvPGameActivity.getInstance().playerBottomScore();
-            ballDirectionY = 1; // collision with bottom(endgame)
+            //ballDirectionY = 1; // collision with bottom(endgame)
         }else if(ballY >= screenHeight + ballSize){
             PvPGameActivity.getInstance().playerTopScore();
-            ballDirectionY = -1; //collision with top(endgame)
+            //ballDirectionY = -1; //collision with top(endgame)
         }
     }
 

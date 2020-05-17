@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +33,7 @@ public class PvPGameActivity extends AppCompatActivity {
     private int pointerTop = -1, pointerBottom = -1;
     private int speed = 1;
     private int playerTopScore, playerBottomScore;
+    private int maxScore = 3;
 
     private Player playerTop, playerBottom;
     private Ball ball;
@@ -47,6 +49,7 @@ public class PvPGameActivity extends AppCompatActivity {
     private boolean plateMove = false;
     private Timer timer, plateTimer;
     private Handler handler;
+    private Runnable runnable;
 
     private boolean start_flg = false;
     private boolean action_flg = false;
@@ -211,22 +214,23 @@ public class PvPGameActivity extends AppCompatActivity {
         playerTopScore++;
         playerTopScoreText.setText(Integer.toString(playerTopScore));
         checkScore();
+        scoreRestart();
     }
 
     public void playerBottomScore(){
         playerBottomScore++;
-        System.out.println("Score Bottom " + playerBottomScore);
         playerBottomScoreText.setText(Integer.toString(playerBottomScore));
         checkScore();
+        scoreRestart();
     }
 
     public void checkScore(){
-        if (playerTopScore >= 3){
+        if (playerTopScore >= maxScore){
             playerBottom.timer.cancel();
             playerTop.timer.cancel();
             ball.timer.cancel();
             resultBoard.setVisibility(View.VISIBLE);
-        }else if(playerBottomScore >= 3){
+        }else if(playerBottomScore >= maxScore){
             playerBottom.timer.cancel();
             playerTop.timer.cancel();
             ball.timer.cancel();
@@ -240,6 +244,43 @@ public class PvPGameActivity extends AppCompatActivity {
         mainMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mainMenu);
         finish();
+    }
+
+    public void scoreRestart(){
+        ball.ballMoving = false;
+        playerTop.plateMove = false;
+        playerBottom.plateMove = false;
+        handler = new Handler(Looper.getMainLooper());
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Do the task...
+                System.out.println("qwertyuikol;");
+                setScene();
+            }
+        };
+        handler.postDelayed(runnable, 2000);
+
+// Stop a repeating task like this.
+        //handler.removeCallbacks(runnable);
+    }
+
+    public void setScene(){
+        System.out.println("setScene");
+        ball.ballX = screenWidth/2 - ball.ballSize / 2;
+        ball.ballY = screenHeight/2 - ball.ballSize / 2;
+        playerTop.playerX = screenWidth/2 - playerTop.plateWidth / 2;
+        playerBottom.playerX = screenWidth/2 - playerBottom.plateWidth / 2;
+        ball.ballMoving = true;
+
+
+//        ball.timer.cancel();
+//        playerTop.timer.cancel();
+//        playerBottom.timer.cancel();
+//        playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
+//        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+//        ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
+       // handler.removeCallbacks(runnable);
     }
 
     public void startGame(){
