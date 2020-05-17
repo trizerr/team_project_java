@@ -33,7 +33,6 @@ public class Bot {
         this.screenHeight = screenHeight;
 
         botX = (screenWidth / 2);
-
     }
 
     public void setBall(Ball ball){
@@ -56,7 +55,7 @@ public class Bot {
 
     public void move(float ballX){
         System.out.println(ballX);
-        botX = ballX;
+        botX = ballX - 80;
         if (botX < 0) { // check wall collision
             botX = 0;
         } else if (botX > screenWidth - plateWidth) { // check wall collision
