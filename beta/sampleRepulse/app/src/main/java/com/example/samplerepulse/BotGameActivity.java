@@ -17,7 +17,8 @@ import java.util.Timer;
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
     private int screenWidth, screenHeight;
-    private Player playerTop, playerBottom;
+    private Player playerBottomBot;
+    private Bot playerTopBot;
     private Ball ball;
     private Drawable plate, ballDrawable;
     private int pointerTop = -1, PointerDown = -1;
@@ -57,12 +58,12 @@ public class BotGameActivity extends AppCompatActivity {
         plateMove = false;
 
 
-        playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
+        playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
+        playerBottomBot = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottomBot, screenWidth, screenHeight);
 
-        playerBottom.plateMove = false;
-        playerTop.plateMove = false;
+        playerBottomBot.plateMove = false;
+        playerTopBot.plateMove = false;
     }
 
     @Override
@@ -79,31 +80,31 @@ public class BotGameActivity extends AppCompatActivity {
 //                }
                 // Player Top//
                 if (pointerTop != event.getPointerId(event.getActionIndex())){
-                    if(!playerTop.plateMove){
+                    if(!playerTopBot.plateMove){
                         if (event.getY() < screenHeight / 2) {
                             if (touchPosX > screenWidth / 2) {
-                                playerTop.plateDirection = 1;
+                                playerTopBot.plateDirection = 1;
                             } else {
-                                playerTop.plateDirection = -1;
+                                playerTopBot.plateDirection = -1;
                             }
-                            playerTop.plateMove = true;
+                            playerTopBot.plateMove = true;
                             pointerTop = event.getPointerId(event.getActionIndex());
                         }
                     }
                     // Player Bottom //
-                }else if(!playerBottom.plateMove){
+                }else if(!playerBottomBot.plateMove){
                     if (event.getY() > screenHeight / 2) {
                         if (touchPosX > screenWidth / 2) {
-                            playerBottom.plateDirection = 1;
+                            playerBottomBot.plateDirection = 1;
                         } else {
-                            playerBottom.plateDirection = -1;
+                            playerBottomBot.plateDirection = -1;
                         }
-                        playerBottom.plateMove = true;
+                        playerBottomBot.plateMove = true;
                         System.out.println("Botttvmtoveitegbh");
                     }
                 }
 
-                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
+                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
@@ -111,21 +112,17 @@ public class BotGameActivity extends AppCompatActivity {
                 touchPosY = (int) event.getY();
                 if (event.getY() < screenHeight / 2) {
                     if (event.getPointerId(event.getActionIndex()) == pointerTop)
-                        playerTop.plateMove = false;
+                        playerTopBot.plateMove = false;
                 }else {
-                    playerBottom.plateMove = false;
+                    playerBottomBot.plateMove = false;
                 }
-                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
+                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
                 return true;
         }
-
         return super.onTouchEvent(event);
     }
 
     public void startGame(){
         start_flg = true;
-
-
     }
-
 }
