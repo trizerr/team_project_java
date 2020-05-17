@@ -17,7 +17,12 @@ import java.util.Timer;
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
     private int screenWidth, screenHeight;
+<<<<<<< Updated upstream
     private Player playerTop, playerBottom;
+=======
+    private Player playerBottomBot;
+    private Bot playerTopBot;
+>>>>>>> Stashed changes
     private Ball ball;
     private Drawable plate, ballDrawable;
     private int pointerTop = -1, PointerDown = -1;
@@ -57,12 +62,21 @@ public class BotGameActivity extends AppCompatActivity {
         plateMove = false;
 
 
+<<<<<<< Updated upstream
         playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
         playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
         ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
 
         playerBottom.plateMove = false;
         playerTop.plateMove = false;
+=======
+        playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
+        playerBottomBot = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottomBot, screenWidth, screenHeight);
+
+        playerBottomBot.plateMove = false;
+        playerTopBot.plateMove = false;
+>>>>>>> Stashed changes
     }
 
     @Override
@@ -79,6 +93,7 @@ public class BotGameActivity extends AppCompatActivity {
 //                }
                 // Player Top//
                 if (pointerTop != event.getPointerId(event.getActionIndex())){
+<<<<<<< Updated upstream
                     if(!playerTop.plateMove){
                         if (event.getY() < screenHeight / 2) {
                             if (touchPosX > screenWidth / 2) {
@@ -87,10 +102,21 @@ public class BotGameActivity extends AppCompatActivity {
                                 playerTop.plateDirection = -1;
                             }
                             playerTop.plateMove = true;
+=======
+                    if(!playerTopBot.plateMove){
+                        if (event.getY() < screenHeight / 2) {
+                            if (touchPosX > screenWidth / 2) {
+                                playerTopBot.plateDirection = 1;
+                            } else {
+                                playerTopBot.plateDirection = -1;
+                            }
+                            playerTopBot.plateMove = true;
+>>>>>>> Stashed changes
                             pointerTop = event.getPointerId(event.getActionIndex());
                         }
                     }
                     // Player Bottom //
+<<<<<<< Updated upstream
                 }else if(!playerBottom.plateMove){
                     if (event.getY() > screenHeight / 2) {
                         if (touchPosX > screenWidth / 2) {
@@ -99,11 +125,25 @@ public class BotGameActivity extends AppCompatActivity {
                             playerBottom.plateDirection = -1;
                         }
                         playerBottom.plateMove = true;
+=======
+                }else if(!playerBottomBot.plateMove){
+                    if (event.getY() > screenHeight / 2) {
+                        if (touchPosX > screenWidth / 2) {
+                            playerBottomBot.plateDirection = 1;
+                        } else {
+                            playerBottomBot.plateDirection = -1;
+                        }
+                        playerBottomBot.plateMove = true;
+>>>>>>> Stashed changes
                         System.out.println("Botttvmtoveitegbh");
                     }
                 }
 
+<<<<<<< Updated upstream
                 System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
+=======
+                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
+>>>>>>> Stashed changes
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
@@ -111,9 +151,13 @@ public class BotGameActivity extends AppCompatActivity {
                 touchPosY = (int) event.getY();
                 if (event.getY() < screenHeight / 2) {
                     if (event.getPointerId(event.getActionIndex()) == pointerTop)
+<<<<<<< Updated upstream
                         playerTop.plateMove = false;
+=======
+                        playerTopBot.plateMove = false;
+>>>>>>> Stashed changes
                 }else {
-                    playerBottom.plateMove = false;
+                    playerBottomBot.plateMove = false;
                 }
                 System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTop.plateDirection);
                 return true;
