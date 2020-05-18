@@ -86,6 +86,49 @@
                 android:text="Exit"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/gameFinishBoard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#cccccc"
+            android:layout_marginVertical="150dp"
+            android:layout_marginHorizontal="50dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your score: "
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"/>
+
+            <Button
+                android:id="@+id/restartButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Restart"/>
+
+            <Button
+                android:id="@+id/gameFinishExitButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="Exit"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="score"
+            android:layout_gravity="center_vertical|right"
+            android:rotation="270"
+            android:textSize="20sp"/>
+
     </FrameLayout>
 
 

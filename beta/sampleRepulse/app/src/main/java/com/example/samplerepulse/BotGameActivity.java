@@ -34,16 +34,19 @@ public class BotGameActivity extends AppCompatActivity {
 
     private TextView ScoreBoard;
 
+    private static BotGameActivity instance;
+
     private Button pauseButton;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
 
     private Button resumeButton, exitButton;
+    private Button restartButton, gameFinishExitButton;
 
     private boolean pause_flg = false;
 
-    private LinearLayout pauseBoard;
+    private LinearLayout pauseBoard, gameFinishBoard;
 
     private boolean plateMove = false;
     private Timer timer, plateTimer;
@@ -60,11 +63,59 @@ public class BotGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_game);
 
+        instance = this;
+
         gameFrame = findViewById(R.id.BotGameFrame);
 
         pauseButton =  findViewById(R.id.pauseButton);
         resumeButton = findViewById(R.id.resumeButton);
         exitButton = findViewById(R.id.exitButton);
+
+        gameFinishBoard = findViewById(R.id.gameFinishBoard);
+        gameFinishExitButton = findViewById(R.id.gameFinishExitButton);
+        restartButton = findViewById(R.id.restartButton);
+
+        pauseBoard = findViewById(R.id.pauseBoard);
+
+
+        playerTopImg = findViewById(R.id.playerTop);
+        playerBottomImg = findViewById(R.id.playerBottom);
+        ballImg = findViewById(R.id.ball);
+
+        plate = getDrawable(R.drawable.plate);
+        ballDrawable = getDrawable(R.drawable.ball);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;
+
+        action_flg = true;
+        plateMove = true;
+
+        playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
+        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottom, screenWidth, screenHeight);
+
+        playerTopBot.setBall(ball);
+        playerTopBot.startMove();
+        playerBottom.plateMove = false;
+        playerTopBot.plateMove = true;
+
+        gameFinishBoard.setVisibility(View.GONE);
+
+        gameFinishExitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitGame();
+            }
+        });
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameRestart();
+            }
+        });
 
         pauseButton.setClickable(true);
 
@@ -96,33 +147,10 @@ public class BotGameActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-        pauseBoard = findViewById(R.id.pauseBoard);
-
-
-        playerTopImg = findViewById(R.id.playerTop);
-        playerBottomImg = findViewById(R.id.playerBottom);
-        ballImg = findViewById(R.id.ball);
-
-        plate = getDrawable(R.drawable.plate);
-        ballDrawable = getDrawable(R.drawable.ball);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenWidth = displayMetrics.widthPixels;
-        screenHeight = displayMetrics.heightPixels;
-
-        action_flg = true;
-        plateMove = true;
-
-        playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottom, screenWidth, screenHeight);
-
-        playerTopBot.setBall(ball);
-        playerBottom.plateMove = false;
-        playerTopBot.plateMove = true;
-        playerTopBot.startMove();
+    public static BotGameActivity getInstance(){
+        return instance;
     }
 
     @Override
@@ -166,9 +194,38 @@ public class BotGameActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
+    public void  playerBottomScore(){
+        gameFinish();
+    }
+
+    public void  botTopScore(){
+        gameFinish();
+    }
 
     public void addScore(){
 
+    }
+
+    public void gameFinish(){
+        gameFinishBoard.setVisibility(View.VISIBLE);
+
+        ball.timer.cancel();
+        ball.timer = null;
+
+        playerTopBot.timer.cancel();
+        playerTopBot.startMove();
+
+        playerBottom.timer.cancel();
+        playerBottom.timer = null;
+    }
+
+    public void gameRestart(){
+        Intent restart = new Intent(this, BotGameActivity.class); //change it to your main class
+        //the following 2 tags are for clearing the backStack and start fresh
+        restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+        startActivity(restart);
     }
 
 

@@ -41,7 +41,6 @@ public class Ball {
         ballY = (float)(screenHeight / 2);
         System.out.println(ballX +" " + ballY);
         timer = new Timer();
-//        PvPGameActivity.getInstance().playerBottomScore();
         timer.schedule(new TimerTask() {
             @Override
             public void run() { // move the ball every 20 ms
@@ -68,7 +67,6 @@ public class Ball {
 
         ballX = (float)(screenWidth / 2);
         ballY = (float)(screenHeight / 2);
-        System.out.println(ballX +" " + ballY);
         startMove();
     }
 
@@ -77,9 +75,14 @@ public class Ball {
         timer.schedule(new TimerTask() {
             @Override
             public void run() { // move the ball every 20 ms
-                if (ballMoving) {
-                    move2();
-                }
+                BotGameActivity.getInstance().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ballMoving) {
+                            move2();
+                        }
+                    }
+                });
             }
         }, 0, 20);
     }
@@ -92,6 +95,8 @@ public class Ball {
         checkGoal();
         ballX += ballXSpeed * ballDirectionX;
         ballY += ballYSpeed * ballDirectionY;
+        System.out.println("BallX" + ballX +" ballY " + ballY + " DirectionX " + ballDirectionX);
+
 
         if (ballX <= 0){
             ballDirectionX = 1; // change x direction
@@ -115,8 +120,19 @@ public class Ball {
         }
     }
 
+    public void checkGoalBot(){
+        if(ballY <= 0){
+            BotGameActivity.getInstance().playerBottomScore();
+            //ballDirectionY = 1; // collision with bottom(endgame)
+        }else if(ballY >= screenHeight + ballSize){
+            BotGameActivity.getInstance().botTopScore();
+            //ballDirectionY = -1; //collision with top(endgame)
+        }
+    }
+
     public void move2(){
         hitCheck2();
+        checkGoalBot();
         ballX += ballXSpeed * ballDirectionX;
         ballY += ballYSpeed * ballDirectionY;
 
@@ -124,10 +140,6 @@ public class Ball {
             ballDirectionX = 1; // change x direction
         }else if(ballX >= screenWidth - ballSize){
             ballDirectionX = -1; //change x direction
-        }else if(ballY <= 0){
-            ballDirectionY = 1; // collision with bottom(endgame)
-        }else if(ballY >= screenHeight + ballSize){
-            ballDirectionY = -1; //collision with top(endgame)
         }
 
         // System.out.println("BallX" + ballX + " Speed " + ballXSpeed + " ScreenWidth" + screenWidth);

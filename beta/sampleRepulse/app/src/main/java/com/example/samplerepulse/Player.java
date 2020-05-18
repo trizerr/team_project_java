@@ -20,7 +20,7 @@ public class Player {
 
     public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
     private int plateSpeed = 10;
-    public boolean plateMove = true; // check whether plate need moving
+    public boolean plateMove = false; // check whether plate need moving
     public Timer timer;
 
     private String playerName = "";
@@ -33,7 +33,7 @@ public class Player {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        playerX = (float)(screenWidth / 2); // set player start position
+        playerX = (float)(screenWidth / 2) - plateWidth / 2; // set player start position
         this.playerLeft =  playerX - plateWidth/2;
         this.pLayerRight = playerX + plateWidth / 2;
         this.playerCenter = playerX+100;

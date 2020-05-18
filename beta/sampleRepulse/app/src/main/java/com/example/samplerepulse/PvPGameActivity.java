@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -101,8 +102,6 @@ public class PvPGameActivity extends AppCompatActivity {
         playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
         playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
         ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
-
-
     }
 
     public static PvPGameActivity getInstance(){
@@ -203,7 +202,7 @@ public class PvPGameActivity extends AppCompatActivity {
     }
 
     public void restartGame(){
-        Intent restart = new Intent(this, PvPGameActivity.class); //change it to your main class
+        Intent restart = new Intent(this, PvPGameActivity.class);
         //the following 2 tags are for clearing the backStack and start fresh
         restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

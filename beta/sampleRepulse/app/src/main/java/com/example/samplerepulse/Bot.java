@@ -38,7 +38,6 @@ public class Bot {
     public void setBall(Ball ball){
         this.ball = ball;
         this.ballX = ball.ballX;
-        System.out.println("BAll X" + ballX);
     }
 
     public void startMove(){
@@ -54,7 +53,6 @@ public class Bot {
     }
 
     public void move(float ballX){
-        System.out.println(ballX);
         botX = ballX - 80;
         if (botX < 0) { // check wall collision
             botX = 0;
