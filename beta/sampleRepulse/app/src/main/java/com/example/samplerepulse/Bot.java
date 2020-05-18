@@ -21,7 +21,7 @@ public class Bot {
     private int plateSpeed = 10;
 
     public boolean plateMove = false;
-    private Timer timer;
+    public Timer timer;
 
     public Bot(ImageView player, Drawable plate, int screenWidth, int screenHeight){
         this.player = player;

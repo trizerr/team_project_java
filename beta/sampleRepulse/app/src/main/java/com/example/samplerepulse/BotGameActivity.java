@@ -4,15 +4,21 @@ import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Timer;
 
@@ -24,10 +30,20 @@ public class BotGameActivity extends AppCompatActivity {
     private Ball ball;
     private Drawable plate, ballDrawable;
     private int pointerTop = -1, pointerDown = -1;
+    private int score;
+
+    private TextView ScoreBoard;
+
+    private Button pauseButton;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
 
+    private Button resumeButton, exitButton;
+
+    private boolean pause_flg = false;
+
+    private LinearLayout pauseBoard;
 
     private boolean plateMove = false;
     private Timer timer, plateTimer;
@@ -45,6 +61,44 @@ public class BotGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bot_game);
 
         gameFrame = findViewById(R.id.BotGameFrame);
+
+        pauseButton =  findViewById(R.id.pauseButton);
+        resumeButton = findViewById(R.id.resumeButton);
+        exitButton = findViewById(R.id.exitButton);
+
+        pauseButton.setClickable(true);
+
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!pause_flg) {
+                    System.out.println("Click");
+                    pauseGame();
+                }
+            }
+        });
+
+        resumeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pause_flg) {
+                    resumeGame();
+                }
+            }
+        });
+
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pause_flg) {
+                    exitGame();
+                }
+            }
+        });
+
+
+        pauseBoard = findViewById(R.id.pauseBoard);
+
 
         playerTopImg = findViewById(R.id.playerTop);
         playerBottomImg = findViewById(R.id.playerBottom);
@@ -80,22 +134,7 @@ public class BotGameActivity extends AppCompatActivity {
             case MotionEvent.ACTION_POINTER_DOWN:
                 int touchPosX = (int) event.getX();
                 int touchPosY = (int) event.getY();
-//                for (int i = 0; i < event.getPointerCount(); i++) {
-//                    System.out.println("Pointer index " + event.getPointerId(i) + " pointerX " + event.getX(i) + " pointer Y " + event.getY(i));
-//                }
-                // Player Top//
-//                if (pointerTop != event.getPointerId(event.getActionIndex())){
-//                if(!playerTopBot.plateMove){
-//                        if (event.getY() < screenHeight / 2) {
-//                            if (touchPosX > screenWidth / 2) {
-//                                playerTopBot.plateDirection = 1;
-//                            } else {
-//                                playerTopBot.plateDirection = -1;
-//                            }
-//                            playerTopBot.plateMove = true;
-//                            pointerTop = event.getPointerId(event.getActionIndex());
-//                        }
-//                    }
+
                 // Player Bottom //
                 if(!playerBottom.plateMove){
                     if (event.getY() > screenHeight / 2) {
@@ -105,11 +144,11 @@ public class BotGameActivity extends AppCompatActivity {
                             playerBottom.plateDirection = -1;
                         }
                         playerBottom.plateMove = true;
-                        System.out.println("Botttvmtoveitegbh");
+//                        System.out.println("Botttvmtoveitegbh");
                     }
                 }
 
-                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
+//                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
@@ -121,10 +160,59 @@ public class BotGameActivity extends AppCompatActivity {
                 }else {
                     playerBottom.plateMove = false;
                 }
-                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
+//                System.out.println("X- " + touchPosX + " Y - " + event.getY() + "Direction " + playerTopBot.plateDirection);
                 return true;
         }
         return super.onTouchEvent(event);
+    }
+
+
+    public void addScore(){
+
+    }
+
+
+    public void pauseGame(){
+//        ball.ballMoving = false;
+//        playerBottom.plateMove = false;
+//        playerTopBot.plateMove = false;
+
+        ball.timer.cancel();
+        ball.timer = null;
+
+        playerTopBot.timer.cancel();
+        playerTopBot.timer = null;
+
+        playerBottom.timer.cancel();
+        playerBottom.timer = null;
+//
+        pauseBoard.setVisibility(View.VISIBLE);
+//        pauseButton.setVisibility(View.GONE);
+
+        pause_flg = true;
+//        System.out.println();
+    }
+
+    public void resumeGame(){
+//        ball.ballMoving = true;
+//        playerBottom.plateMove = true;
+//        playerTopBot.plateMove = true;
+        ball.startMove();
+        playerTopBot.startMove();
+        playerBottom.startMove();
+
+        pauseButton.setPressed(false);
+        pause_flg = false;
+        pauseBoard.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.VISIBLE);
+    }
+
+    public void exitGame(){
+        Intent mainMenu = new Intent(this, MainActivity.class);
+        //the following 2 tags are for clearing the backStack and start fresh
+        mainMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mainMenu);
+        finish();
     }
 
     public void startGame(){

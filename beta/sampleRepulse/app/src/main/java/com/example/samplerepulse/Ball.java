@@ -69,6 +69,10 @@ public class Ball {
         ballX = (float)(screenWidth / 2);
         ballY = (float)(screenHeight / 2);
         System.out.println(ballX +" " + ballY);
+        startMove();
+    }
+
+    public void startMove(){
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -79,7 +83,6 @@ public class Ball {
             }
         }, 0, 20);
     }
-
 
     public Ball() {
     };
