@@ -28,11 +28,12 @@ public class BotGameActivity extends AppCompatActivity {
     private Player playerBottom;
     private Bot playerTopBot;
     private Ball ball;
+    private int hitScore = ball.hitScore;
     private Drawable plate, ballDrawable;
     private int pointerTop = -1, pointerDown = -1;
     private int score;
 
-    private TextView ScoreBoard;
+    private TextView scoreBoard;
 
     private static BotGameActivity instance;
 
@@ -228,6 +229,9 @@ public class BotGameActivity extends AppCompatActivity {
         startActivity(restart);
     }
 
+    public void botScore(){
+        scoreBoard.setText(Integer.toString(hitScore));
+    }
 
     public void pauseGame(){
 //        ball.ballMoving = false;
