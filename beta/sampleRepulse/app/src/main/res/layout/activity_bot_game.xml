@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:layout_marginTop="@dimen/plateMargin"
-            android:background="@drawable/plate"
+            android:background="@drawable/plate_top"
             android:scaleType="fitXY" />
 
         <ImageView

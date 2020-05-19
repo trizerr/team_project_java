@@ -269,7 +269,7 @@ public class PvPGameActivity extends AppCompatActivity {
         ball.ballX = screenWidth/2 - ball.ballSize / 2;
         ball.ballY = screenHeight/2 - ball.ballSize / 2;
         ball.setDirection();
-        
+
         playerTop.playerX = screenWidth/2 - playerTop.plateWidth / 2;
         playerTop.player.setX(playerTop.playerX);
 
