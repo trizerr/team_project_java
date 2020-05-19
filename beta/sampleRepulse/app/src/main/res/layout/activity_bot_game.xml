@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/plateMargin"
             android:background="@drawable/plate"
             android:scaleType="fitXY" />
 
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/plateMargin"
             android:background="@drawable/plate"
             android:scaleType="fitXY" />
 
@@ -62,12 +62,21 @@
             >
 
             <TextView
+                android:id="@+id/pauseBoardScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your score: "
+                android:text="@string/score"
                 android:textSize="30sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"/>
+
+            <TextView
+                android:id="@+id/pauseBoardBestScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/best_score"
+                android:textSize="30sp"
+                android:layout_gravity="center" />
 
             <Button
                 android:id="@+id/resumeButton"
@@ -75,14 +84,14 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="Resume"/>
+                android:text="@string/resume"/>
 
             <Button
                 android:id="@+id/exitButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:text="Exit"/>
+                android:text="@string/exit"/>
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +109,7 @@
                 android:id="@+id/scoreLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Score: "
+                android:text="@string/score"
                 android:textSize="30sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"/>
@@ -109,7 +118,7 @@
                 android:id="@+id/bestScoreLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Best Score: "
+                android:text="@string/best_score"
                 android:textSize="30sp"
                 android:layout_gravity="center"
                 />
@@ -120,14 +129,14 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="Restart"/>
+                android:text="@string/restart"/>
 
             <Button
                 android:id="@+id/gameFinishExitButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:text="Exit"/>
+                android:text="@string/exit"/>
         </LinearLayout>
 
         <LinearLayout
@@ -141,8 +150,9 @@
             android:id="@+id/scoreBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Score: 0"
+            android:text="@string/score"
             android:layout_gravity="bottom"
+            android:paddingBottom="5dp"
             android:textSize="20sp"/>
         </LinearLayout>
     </FrameLayout>

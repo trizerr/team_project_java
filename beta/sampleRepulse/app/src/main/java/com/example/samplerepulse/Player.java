@@ -13,7 +13,7 @@ import java.util.TimerTask;
 public class Player {
     public float playerX; // player position X
     public float playerLeft, pLayerRight,playerCenter;
-    private ImageView player; // player image main
+    public ImageView player; // player image main
     private Drawable plate; // player plate(for plate values)
     protected int plateWidth, plateHeight;
     private int screenWidth, screenHeight;

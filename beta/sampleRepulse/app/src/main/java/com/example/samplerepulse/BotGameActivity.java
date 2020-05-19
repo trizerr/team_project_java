@@ -30,7 +30,7 @@ public class BotGameActivity extends AppCompatActivity {
     private int screenWidth, screenHeight;
     private int pointerTop = -1, pointerDown = -1;
     private int score = 0;
-    private int highScore;
+    private int bestScore;
 
     private boolean start_flg = false;
     private boolean action_flg = false;
@@ -47,7 +47,9 @@ public class BotGameActivity extends AppCompatActivity {
 
     private Drawable plate, ballDrawable;
 
-    private TextView scoreBoard, highScoreLabel, scoreLabel;
+    private TextView scoreBoard;
+    private TextView pauseScore, pauseBestScore;
+    private TextView bestScoreLabel, scoreLabel;
 
     private static BotGameActivity instance;
 
@@ -69,12 +71,12 @@ public class BotGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_game);
 
-//        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE); //для HIGHSCORE
+//        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE); //для bestSCORE
 
         instance = this;
 
         settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        highScore = settings.getInt("HIGH_SCORE", 0);
+        bestScore = settings.getInt("BEST_SCORE", 0);
 
         gameFrame = findViewById(R.id.BotGameFrame);
 
@@ -82,21 +84,24 @@ public class BotGameActivity extends AppCompatActivity {
         pauseBoard = findViewById(R.id.pauseBoard);
         scoreBoard = findViewById(R.id.scoreBoard);
 
-        highScoreLabel = findViewById(R.id.bestScoreLabel);
+        bestScoreLabel = findViewById(R.id.bestScoreLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
 
-          //HIGHSCORE P.S. це вже є в вигляді функції
+        pauseScore = findViewById(R.id.pauseBoardScore);
+        pauseBestScore = findViewById(R.id.pauseBoardBestScore);
 
-//        highScoreLabel = findViewById(R.id.highScore);
-//        int highScore = settings.getInt("HIGH_SCORE", 0);
-//        if (score > highScore) {
-//           highScoreLabel.setText("High Score: " + score);
+          //bestSCORE P.S. це вже є в вигляді функції
+
+//        bestScoreLabel = findViewById(R.id.bestScore);
+//        int bestScore = settings.getInt("best_SCORE", 0);
+//        if (score > bestScore) {
+//           bestScoreLabel.setText("best Score: " + score);
 //
 //            SharedPreferences.Editor editor = settings.edit();
-//            editor.putInt("HIGH_SCORE", score);
+//            editor.putInt("best_SCORE", score);
 //            editor.commit();
 //        }else {
-//            highScoreLabel.setText("High Score: " + highScore);
+//            bestScoreLabel.setText("best Score: " + bestScore);
 //        }
 
         pauseButton =  findViewById(R.id.pauseButton);
@@ -234,17 +239,17 @@ public class BotGameActivity extends AppCompatActivity {
         gameFinish();
     }
 
-    public void highScore() {
-        if (score > highScore) {
-            //highScoreLabel.setText("High Score: " + score);
+    public void bestScore() {
+        if (score > bestScore) {
+            //bestScoreLabel.setText("best Score: " + score);
 
             SharedPreferences.Editor editor = settings.edit();
-            editor.putInt("HIGH_SCORE", score);
+            editor.putInt("BEST_SCORE", score);
             editor.commit();
         }else {
-            //highScoreLabel.setText("High Score: " + highScore);
+            //bestScoreLabel.setText("best Score: " + bestScore);
         }
-        System.out.println("HighScore is " + score);
+        System.out.println("bestScore is " + score);
     }
 
     public void addScore(){
@@ -256,17 +261,18 @@ public class BotGameActivity extends AppCompatActivity {
     public void gameFinish(){
         gameFinishBoard.setVisibility(View.VISIBLE);
         scoreLabel.setText("Score: " + Integer.toString(score));
-        highScoreLabel.setText("Best Score: " + Integer.toString(highScore));
-        highScore();
+        bestScoreLabel.setText("Best Score: " + Integer.toString(bestScore));
+        bestScore();
+        if ((ball.timer != null) && (playerTopBot != null) && (playerBottom != null)){
+            ball.timer.cancel();
+            ball.timer = null;
 
-        ball.timer.cancel();
-        ball.timer = null;
+            playerTopBot.timer.cancel();
+            playerTopBot = null;
 
-        playerTopBot.timer.cancel();
-        playerTopBot = null;
-
-        playerBottom.timer.cancel();
-        playerBottom.timer = null;
+            playerBottom.timer.cancel();
+            playerBottom.timer = null;
+        }
     }
     public void gameRestart(){
         Intent restart = new Intent(this, BotGameActivity.class);
@@ -282,15 +288,19 @@ public class BotGameActivity extends AppCompatActivity {
 //        ball.ballMoving = false;
 //        playerBottom.plateMove = false;
 //        playerTopBot.plateMove = false;
+        pauseScore.setText("Score: " + Integer.toString(score));
+        pauseBestScore.setText("Best Score: " + Integer.toString(bestScore));
+        if ((ball.timer != null) && (playerTopBot != null) && (playerBottom != null)) {
 
-        ball.timer.cancel();
-        ball.timer = null;
+            ball.timer.cancel();
+            ball.timer = null;
 
-        playerTopBot.timer.cancel();
-        playerTopBot.timer = null;
+            playerTopBot.timer.cancel();
+            playerTopBot.timer = null;
 
-        playerBottom.timer.cancel();
-        playerBottom.timer = null;
+            playerBottom.timer.cancel();
+            playerBottom.timer = null;
+        }
 //
         pauseBoard.setVisibility(View.VISIBLE);
 //        pauseButton.setVisibility(View.GONE);

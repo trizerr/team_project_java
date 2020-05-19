@@ -250,13 +250,15 @@ public class PvPGameActivity extends AppCompatActivity {
         ball.ballMoving = false;
         playerTop.plateMove = false;
         playerBottom.plateMove = false;
+        setScene();
+
         handler = new Handler(Looper.getMainLooper());
         runnable = new Runnable() {
             @Override
             public void run() {
                 // Do the task...
+                ball.ballMoving = true;
                 System.out.println("qwertyuikol;");
-                setScene();
             }
         };
         handler.postDelayed(runnable, 2000);
@@ -266,9 +268,13 @@ public class PvPGameActivity extends AppCompatActivity {
         System.out.println("setScene");
         ball.ballX = screenWidth/2 - ball.ballSize / 2;
         ball.ballY = screenHeight/2 - ball.ballSize / 2;
+        ball.setDirection();
+        
         playerTop.playerX = screenWidth/2 - playerTop.plateWidth / 2;
+        playerTop.player.setX(playerTop.playerX);
+
         playerBottom.playerX = screenWidth/2 - playerBottom.plateWidth / 2;
-        ball.ballMoving = true;
+        playerBottom.player.setX(playerBottom.playerX);
     }
 
     public void startGame(){

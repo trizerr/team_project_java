@@ -13,8 +13,8 @@ public class Ball {
     public float ballX, ballY;
     public int ballXSpeed = 5; // change x position
     public int ballYSpeed = 10; // change y position
-    public int ballDirectionX = 1;
-    public int ballDirectionY = 1;
+    public int ballDirectionX = 0;
+    public int ballDirectionY = 0;
     public int ballSize;
     public Timer timer;
     public boolean ballMoving;
@@ -26,7 +26,7 @@ public class Ball {
     int playerMarginVertical = 10;
     public int screenWidth, screenHeight;
     public int hitScore = 0;
-
+    public int plateMargin;
     TextView text;
 
     public Ball(ImageView ball, Drawable ballDrawable,Player playerTop, Player playerBottom, int screenWidth, int screenHeight){
@@ -42,6 +42,8 @@ public class Ball {
         ballY = (float)(screenHeight / 2);
         System.out.println(ballX +" " + ballY);
         timer = new Timer();
+
+        setDirection();
         timer.schedule(new TimerTask() {
             @Override
             public void run() { // move the ball every 20 ms
@@ -71,7 +73,24 @@ public class Ball {
         startMove();
     }
 
+    public void setDirection(){
+        this.ballDirectionX = 0;
+        this.ballDirectionY = 0;
+
+        while (ballDirectionX == 0 || ballDirectionY == 0){
+            ballDirectionX = (int)( Math.random() * 3) - 1;
+            ballDirectionY = (int)( Math.random() * 3) - 1;
+            System.out.println("dirX " + ballDirectionX + " dirY " + ballDirectionY);
+        }
+        this.ballXSpeed = (int) (Math.random() * 3) + 4;
+        this.ballYSpeed = (int) (Math.random() * 3) + 8;
+
+        System.out.println("speedX " + ballXSpeed + " speedY " + ballYSpeed);
+
+    }
+
     public void startMove(){
+        setDirection();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
