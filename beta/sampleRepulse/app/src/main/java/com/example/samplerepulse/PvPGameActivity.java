@@ -2,6 +2,7 @@ package com.example.samplerepulse;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class PvPGameActivity extends AppCompatActivity {
     private Drawable plate, ballDrawable;
 
     private TextView playerTopScoreText, playerBottomScoreText;
+    private TextView pvpResult;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
@@ -62,6 +64,8 @@ public class PvPGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pvp_game);
 
         instance = this;
+
+        pvpResult = findViewById(R.id.pvpResult);
 
         playerTopScoreText = findViewById(R.id.playerTopScore);
         playerBottomScoreText = findViewById(R.id.playerBottomScore);
@@ -225,15 +229,26 @@ public class PvPGameActivity extends AppCompatActivity {
     }
 
     public void checkScore(){
+        int playerTopColor = getResources().getColor(R.color.playerTop);
+        int playerBottomColor = getResources().getColor(R.color.playerBottom);
+
         if (playerTopScore >= maxScore){
             playerBottom.timer.cancel();
             playerTop.timer.cancel();
             ball.timer.cancel();
+
+            pvpResult.setText("Player 2 Win");
+            pvpResult.setTextColor(playerTopColor);
+
             resultBoard.setVisibility(View.VISIBLE);
         }else if(playerBottomScore >= maxScore){
             playerBottom.timer.cancel();
             playerTop.timer.cancel();
             ball.timer.cancel();
+
+            pvpResult.setText("Player 1 Win");
+            pvpResult.setTextColor(playerBottomColor);
+
             resultBoard.setVisibility(View.VISIBLE);
         }
     }
