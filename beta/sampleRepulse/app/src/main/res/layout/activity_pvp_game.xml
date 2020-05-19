@@ -79,7 +79,7 @@
             android:layout_marginVertical="175dp"
             android:orientation="horizontal"
             android:visibility="gone"
-            android:background="#cccccc">
+            android:background="@drawable/menu_layout">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,6 +87,7 @@
                 android:layout_gravity="center"
                 android:layout_marginVertical="100dp"
                 android:orientation="vertical"
+
             >
 
                 <TextView
@@ -94,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:text="Player 1 Win"
                     android:textSize="30sp"/>
 
