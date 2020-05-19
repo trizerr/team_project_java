@@ -44,7 +44,7 @@ public class Bot {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Bot Timer");
+                //System.out.println("Bot Timer");
                 if (plateMove) {
                     move(ball.ballX);
                 }
@@ -54,7 +54,7 @@ public class Bot {
 
     public void move(float ballX){
         botX = ballX - (int)(plateWidth / 2 - ball.ballSize / 2);
-        System.out.println("BotX " + botX + " ballX " + ballX +" plateWidth " + plateWidth + " ballSize " + ball.ballSize);
+        //System.out.println("BotX " + botX + " ballX " + ballX +" plateWidth " + plateWidth + " ballSize " + ball.ballSize);
         if (botX < 0) { // check wall collision
             botX = 0;
         } else if (botX > screenWidth - plateWidth) { // check wall collision

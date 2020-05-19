@@ -4,7 +4,9 @@ import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +44,7 @@ public class BotGameActivity extends AppCompatActivity {
 
     private Drawable plate, ballDrawable;
 
-    private TextView scoreBoard;
+    private TextView scoreBoard, highScoreLabel;
 
     private static BotGameActivity instance;
 
@@ -58,13 +60,13 @@ public class BotGameActivity extends AppCompatActivity {
     private Timer timer, plateTimer;
     private Handler handler;
 
-//    Ball ballPos = new Ball();
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_game);
+
+//        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE); //для HIGHSCORE
 
         instance = this;
 
@@ -73,6 +75,20 @@ public class BotGameActivity extends AppCompatActivity {
         gameFinishBoard = findViewById(R.id.gameFinishBoard);
         pauseBoard = findViewById(R.id.pauseBoard);
         scoreBoard = findViewById(R.id.scoreBoard);
+
+          //HIGHSCORE P.S. це вже є в вигляді функції
+
+//        highScoreLabel = findViewById(R.id.highScore);
+//        int highScore = settings.getInt("HIGH_SCORE", 0);
+//        if (score > highScore) {
+//           highScoreLabel.setText("High Score: " + score);
+//
+//            SharedPreferences.Editor editor = settings.edit();
+//            editor.putInt("HIGH_SCORE", score);
+//            editor.commit();
+//        }else {
+//            highScoreLabel.setText("High Score: " + highScore);
+//        }
 
         pauseButton =  findViewById(R.id.pauseButton);
         resumeButton = findViewById(R.id.resumeButton);
@@ -209,14 +225,32 @@ public class BotGameActivity extends AppCompatActivity {
         gameFinish();
     }
 
+    public void highScore() {
+        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        int highScore = settings.getInt("HIGH_SCORE", 0);
+        if (score > highScore) {
+            //highScoreLabel.setText("High Score: " + score);
+
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("HIGH_SCORE", score);
+            editor.commit();
+            System.out.println("HighScore is " + score);
+        }else {
+            //highScoreLabel.setText("High Score: " + highScore);
+            System.out.println("HighScore is " + score);
+        }
+    }
+
     public void addScore(){
         score++;
         scoreBoard.setText("Score: " + Integer.toString(score));
-        System.out.println(score);
+        //System.out.println(score);
     }
 
     public void gameFinish(){
         gameFinishBoard.setVisibility(View.VISIBLE);
+
+        highScore();
 
         ball.timer.cancel();
         ball.timer = null;

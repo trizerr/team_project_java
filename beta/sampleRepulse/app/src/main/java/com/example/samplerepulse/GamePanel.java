@@ -30,7 +30,5 @@ public class GamePanel extends SurfaceView {
 
     public GamePanel(Context context) {
         super(context);
-
-
     }
 }

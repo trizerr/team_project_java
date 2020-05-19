@@ -78,7 +78,7 @@ public class Ball {
                 BotGameActivity.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        System.out.println("Ball Timer");
+                        //System.out.println("Ball Timer");
                         if (ballMoving) {
                             move2();
                         }
