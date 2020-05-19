@@ -24,37 +24,39 @@ import java.util.Timer;
 
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
+
     private int screenWidth, screenHeight;
+    private int pointerTop = -1, pointerDown = -1;
+    private int score = 0;
+
+    private boolean start_flg = false;
+    private boolean action_flg = false;
+    private boolean plateMove = false;
+    private boolean pause_flg = false;
+
     private Player playerBottom;
+
     private Bot playerTopBot;
+
     private Ball ball;
     private int hitScore = ball.hitScore;
     private Drawable plate, ballDrawable;
-    private int pointerTop = -1, pointerDown = -1;
-    private int score;
 
     private TextView scoreBoard;
 
     private static BotGameActivity instance;
-
-    private Button pauseButton;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
 
     private Button resumeButton, exitButton;
     private Button restartButton, gameFinishExitButton;
-
-    private boolean pause_flg = false;
+    private Button pauseButton;
 
     private LinearLayout pauseBoard, gameFinishBoard;
 
-    private boolean plateMove = false;
     private Timer timer, plateTimer;
     private Handler handler;
-
-    private boolean start_flg = false;
-    private boolean action_flg = false;
 
 //    Ball ballPos = new Ball();
 
@@ -68,16 +70,15 @@ public class BotGameActivity extends AppCompatActivity {
 
         gameFrame = findViewById(R.id.BotGameFrame);
 
+        gameFinishBoard = findViewById(R.id.gameFinishBoard);
+        pauseBoard = findViewById(R.id.pauseBoard);
+        scoreBoard = findViewById(R.id.scoreBoard);
+
         pauseButton =  findViewById(R.id.pauseButton);
         resumeButton = findViewById(R.id.resumeButton);
         exitButton = findViewById(R.id.exitButton);
-
-        gameFinishBoard = findViewById(R.id.gameFinishBoard);
         gameFinishExitButton = findViewById(R.id.gameFinishExitButton);
         restartButton = findViewById(R.id.restartButton);
-
-        pauseBoard = findViewById(R.id.pauseBoard);
-
 
         playerTopImg = findViewById(R.id.playerTop);
         playerBottomImg = findViewById(R.id.playerBottom);
@@ -100,10 +101,16 @@ public class BotGameActivity extends AppCompatActivity {
 
         playerTopBot.setBall(ball);
         playerTopBot.startMove();
+
         playerBottom.plateMove = false;
         playerTopBot.plateMove = true;
 
         gameFinishBoard.setVisibility(View.GONE);
+
+        addListeners();
+    }
+
+    public void addListeners(){
 
         gameFinishExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +154,6 @@ public class BotGameActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public static BotGameActivity getInstance(){
@@ -204,7 +210,9 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     public void addScore(){
-
+        score++;
+        scoreBoard.setText("Score: " + Integer.toString(score));
+        System.out.println(score);
     }
 
     public void gameFinish(){
@@ -221,7 +229,7 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     public void gameRestart(){
-        Intent restart = new Intent(this, BotGameActivity.class); //change it to your main class
+        Intent restart = new Intent(this, BotGameActivity.class);
         //the following 2 tags are for clearing the backStack and start fresh
         restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -251,13 +259,9 @@ public class BotGameActivity extends AppCompatActivity {
 //        pauseButton.setVisibility(View.GONE);
 
         pause_flg = true;
-//        System.out.println();
     }
 
     public void resumeGame(){
-//        ball.ballMoving = true;
-//        playerBottom.plateMove = true;
-//        playerTopBot.plateMove = true;
         ball.startMove();
         playerTopBot.startMove();
         playerBottom.startMove();

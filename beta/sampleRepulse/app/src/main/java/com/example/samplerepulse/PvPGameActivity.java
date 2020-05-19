@@ -260,9 +260,6 @@ public class PvPGameActivity extends AppCompatActivity {
             }
         };
         handler.postDelayed(runnable, 2000);
-
-// Stop a repeating task like this.
-        //handler.removeCallbacks(runnable);
     }
 
     public void setScene(){
@@ -272,21 +269,10 @@ public class PvPGameActivity extends AppCompatActivity {
         playerTop.playerX = screenWidth/2 - playerTop.plateWidth / 2;
         playerBottom.playerX = screenWidth/2 - playerBottom.plateWidth / 2;
         ball.ballMoving = true;
-
-
-//        ball.timer.cancel();
-//        playerTop.timer.cancel();
-//        playerBottom.timer.cancel();
-//        playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
-//        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-//        ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
-       // handler.removeCallbacks(runnable);
     }
 
     public void startGame(){
         start_flg = true;
-
-
     }
 
 }

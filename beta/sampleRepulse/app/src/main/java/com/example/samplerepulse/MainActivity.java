@@ -40,26 +40,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        int touchPosX = (int) event.getX();
-//        if(!plateMove) {
-//            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                if (touchPosX > screenWidth / 2) {
-//                    playerBottom.plateDirection = 1;
-//                } else {
-//                    playerBottom.plateDirection = -1;
-//                }
-//                playerBottom.plateMove = true;
-//            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//                playerBottom.plateMove = false;
-//            }
-//        }
-//        System.out.println("touch");
-//        return super.onTouchEvent(event);
-//    }
-
-
     public void PvPGameStart(){
         Intent PvP = new Intent(this, PvPGameActivity.class);
         startActivity(PvP);

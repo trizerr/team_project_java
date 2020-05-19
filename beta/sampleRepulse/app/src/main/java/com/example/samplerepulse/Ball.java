@@ -79,6 +79,7 @@ public class Ball {
                 BotGameActivity.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        System.out.println("Ball Timer");
                         if (ballMoving) {
                             move2();
                         }
@@ -87,9 +88,6 @@ public class Ball {
             }
         }, 0, 20);
     }
-
-    public Ball() {
-    };
 
     public void move(){
         hitCheck();
@@ -179,13 +177,13 @@ public class Ball {
                 ballY <= screenHeight + ballSize && ballY >= screenHeight)
         {
             ballDirectionY = -1;
-            hitScore += 1;
-            System.out.println("Score is " + hitScore);
+            BotGameActivity.getInstance().addScore();
         }
         else if(ballX + ballSize >= playerTopBot.botX &&
                 ballX <= playerTopBot.botX + playerTopBot.plateWidth &&
                 ballY <= ballSize && ballY >= 0)
         {
+            BotGameActivity.getInstance().addScore();
             ballDirectionY = 1;
             hitScore += 1;
             System.out.println("Score is " + hitScore);
