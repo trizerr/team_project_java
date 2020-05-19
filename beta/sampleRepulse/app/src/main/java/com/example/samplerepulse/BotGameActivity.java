@@ -4,7 +4,9 @@ import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,39 +26,39 @@ import java.util.Timer;
 
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
-    private int screenWidth, screenHeight;
-    private Player playerBottom;
-    private Bot playerTopBot;
-    private Ball ball;
-    private int hitScore = ball.hitScore;
-    private Drawable plate, ballDrawable;
-    private int pointerTop = -1, pointerDown = -1;
-    private int score;
 
-    private TextView scoreBoard;
+    private int screenWidth, screenHeight;
+    private int pointerTop = -1, pointerDown = -1;
+    private int score = 0;
+
+    private boolean start_flg = false;
+    private boolean action_flg = false;
+    private boolean plateMove = false;
+    private boolean pause_flg = false;
+
+    private Player playerBottom;
+
+    private Bot playerTopBot;
+
+    private Ball ball;
+
+    private Drawable plate, ballDrawable;
+
+    private TextView scoreBoard, highScoreLabel;
 
     private static BotGameActivity instance;
-
-    private Button pauseButton;
 
     private ImageView ballImg;
     private ImageView playerBottomImg,playerTopImg;
 
     private Button resumeButton, exitButton;
     private Button restartButton, gameFinishExitButton;
-
-    private boolean pause_flg = false;
+    private Button pauseButton;
 
     private LinearLayout pauseBoard, gameFinishBoard;
 
-    private boolean plateMove = false;
     private Timer timer, plateTimer;
     private Handler handler;
-
-    private boolean start_flg = false;
-    private boolean action_flg = false;
-
-//    Ball ballPos = new Ball();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -64,20 +66,35 @@ public class BotGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_game);
 
+//        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE); //для HIGHSCORE
+
         instance = this;
 
         gameFrame = findViewById(R.id.BotGameFrame);
 
+        gameFinishBoard = findViewById(R.id.gameFinishBoard);
+        pauseBoard = findViewById(R.id.pauseBoard);
+        scoreBoard = findViewById(R.id.scoreBoard);
+
+          //HIGHSCORE P.S. це вже є в вигляді функції
+
+//        highScoreLabel = findViewById(R.id.highScore);
+//        int highScore = settings.getInt("HIGH_SCORE", 0);
+//        if (score > highScore) {
+//           highScoreLabel.setText("High Score: " + score);
+//
+//            SharedPreferences.Editor editor = settings.edit();
+//            editor.putInt("HIGH_SCORE", score);
+//            editor.commit();
+//        }else {
+//            highScoreLabel.setText("High Score: " + highScore);
+//        }
+
         pauseButton =  findViewById(R.id.pauseButton);
         resumeButton = findViewById(R.id.resumeButton);
         exitButton = findViewById(R.id.exitButton);
-
-        gameFinishBoard = findViewById(R.id.gameFinishBoard);
         gameFinishExitButton = findViewById(R.id.gameFinishExitButton);
         restartButton = findViewById(R.id.restartButton);
-
-        pauseBoard = findViewById(R.id.pauseBoard);
-
 
         playerTopImg = findViewById(R.id.playerTop);
         playerBottomImg = findViewById(R.id.playerBottom);
@@ -100,10 +117,16 @@ public class BotGameActivity extends AppCompatActivity {
 
         playerTopBot.setBall(ball);
         playerTopBot.startMove();
+
         playerBottom.plateMove = false;
         playerTopBot.plateMove = true;
 
         gameFinishBoard.setVisibility(View.GONE);
+
+        addListeners();
+    }
+
+    public void addListeners(){
 
         gameFinishExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +170,6 @@ public class BotGameActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public static BotGameActivity getInstance(){
@@ -203,12 +225,32 @@ public class BotGameActivity extends AppCompatActivity {
         gameFinish();
     }
 
-    public void addScore(){
+    public void highScore() {
+        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        int highScore = settings.getInt("HIGH_SCORE", 0);
+        if (score > highScore) {
+            //highScoreLabel.setText("High Score: " + score);
 
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("HIGH_SCORE", score);
+            editor.commit();
+            System.out.println("HighScore is " + score);
+        }else {
+            //highScoreLabel.setText("High Score: " + highScore);
+            System.out.println("HighScore is " + score);
+        }
+    }
+
+    public void addScore(){
+        score++;
+        scoreBoard.setText("Score: " + Integer.toString(score));
+        //System.out.println(score);
     }
 
     public void gameFinish(){
         gameFinishBoard.setVisibility(View.VISIBLE);
+
+        highScore();
 
         ball.timer.cancel();
         ball.timer = null;
@@ -221,7 +263,7 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     public void gameRestart(){
-        Intent restart = new Intent(this, BotGameActivity.class); //change it to your main class
+        Intent restart = new Intent(this, BotGameActivity.class);
         //the following 2 tags are for clearing the backStack and start fresh
         restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -229,9 +271,6 @@ public class BotGameActivity extends AppCompatActivity {
         startActivity(restart);
     }
 
-    public void botScore(){
-        scoreBoard.setText(Integer.toString(hitScore));
-    }
 
     public void pauseGame(){
 //        ball.ballMoving = false;
@@ -251,13 +290,9 @@ public class BotGameActivity extends AppCompatActivity {
 //        pauseButton.setVisibility(View.GONE);
 
         pause_flg = true;
-//        System.out.println();
     }
 
     public void resumeGame(){
-//        ball.ballMoving = true;
-//        playerBottom.plateMove = true;
-//        playerTopBot.plateMove = true;
         ball.startMove();
         playerTopBot.startMove();
         playerBottom.startMove();
