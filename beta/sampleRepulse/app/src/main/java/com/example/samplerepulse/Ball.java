@@ -119,6 +119,16 @@ public class Ball {
         }
     }
 
+    public void checkGoalBot(){
+        if(ballY <= 0){
+            BotGameActivity.getInstance().playerBottomScore();
+            //ballDirectionY = 1; // collision with bottom(endgame)
+        }else if(ballY >= screenHeight + ballSize){
+            BotGameActivity.getInstance().botTopScore();
+            //ballDirectionY = -1; //collision with top(endgame)
+        }
+    }
+
     public void hitScore(){
         if (ballX + ballSize >= playerBottomBot.playerX &&
                 ballX <= playerBottomBot.playerX + playerBottomBot.plateWidth &&
@@ -138,6 +148,7 @@ public class Ball {
 
     public void move2(){
         hitCheck2();
+        checkGoalBot();
         ballX += ballXSpeed * ballDirectionX;
         ballY += ballYSpeed * ballDirectionY;
 

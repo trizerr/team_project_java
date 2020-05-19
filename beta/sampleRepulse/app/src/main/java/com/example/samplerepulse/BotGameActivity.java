@@ -30,11 +30,14 @@ public class BotGameActivity extends AppCompatActivity {
     private int screenWidth, screenHeight;
     private int pointerTop = -1, pointerDown = -1;
     private int score = 0;
+    private int highScore;
 
     private boolean start_flg = false;
     private boolean action_flg = false;
     private boolean plateMove = false;
     private boolean pause_flg = false;
+
+    private SharedPreferences settings;
 
     private Player playerBottom;
 
@@ -44,7 +47,7 @@ public class BotGameActivity extends AppCompatActivity {
 
     private Drawable plate, ballDrawable;
 
-    private TextView scoreBoard, highScoreLabel;
+    private TextView scoreBoard, highScoreLabel, scoreLabel;
 
     private static BotGameActivity instance;
 
@@ -70,11 +73,17 @@ public class BotGameActivity extends AppCompatActivity {
 
         instance = this;
 
+        settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        highScore = settings.getInt("HIGH_SCORE", 0);
+
         gameFrame = findViewById(R.id.BotGameFrame);
 
         gameFinishBoard = findViewById(R.id.gameFinishBoard);
         pauseBoard = findViewById(R.id.pauseBoard);
         scoreBoard = findViewById(R.id.scoreBoard);
+
+        highScoreLabel = findViewById(R.id.bestScoreLabel);
+        scoreLabel = findViewById(R.id.scoreLabel);
 
           //HIGHSCORE P.S. це вже є в вигляді функції
 
@@ -226,19 +235,16 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     public void highScore() {
-        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        int highScore = settings.getInt("HIGH_SCORE", 0);
         if (score > highScore) {
             //highScoreLabel.setText("High Score: " + score);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("HIGH_SCORE", score);
             editor.commit();
-            System.out.println("HighScore is " + score);
         }else {
             //highScoreLabel.setText("High Score: " + highScore);
-            System.out.println("HighScore is " + score);
         }
+        System.out.println("HighScore is " + score);
     }
 
     public void addScore(){
@@ -249,14 +255,15 @@ public class BotGameActivity extends AppCompatActivity {
 
     public void gameFinish(){
         gameFinishBoard.setVisibility(View.VISIBLE);
-
+        scoreLabel.setText("Score: " + Integer.toString(score));
+        highScoreLabel.setText("Best Score: " + Integer.toString(highScore));
         highScore();
 
         ball.timer.cancel();
         ball.timer = null;
 
         playerTopBot.timer.cancel();
-        playerTopBot.startMove();
+        playerTopBot = null;
 
         playerBottom.timer.cancel();
         playerBottom.timer = null;
