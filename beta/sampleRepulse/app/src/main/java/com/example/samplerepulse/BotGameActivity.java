@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import java.util.Timer;
 
+import android.content.pm.ActivityInfo;
+
 public class BotGameActivity extends AppCompatActivity {
     private FrameLayout gameFrame;
 
@@ -68,6 +70,7 @@ public class BotGameActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_game);
 
