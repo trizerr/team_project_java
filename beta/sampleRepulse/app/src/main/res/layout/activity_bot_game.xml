@@ -44,7 +44,7 @@
         <Button
             android:id="@+id/pauseButton"
             android:layout_width="30dp"
-
+            android:onClick="pauseGame"
             android:layout_height="30dp"
             android:background="@drawable/pause_button"
             android:layout_gravity="center_vertical"
@@ -100,7 +100,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your score: "
+                android:text="Your score: 0"
                 android:textSize="30sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"/>

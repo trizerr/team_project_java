@@ -227,7 +227,6 @@ public class BotGameActivity extends AppCompatActivity {
         playerBottom.timer.cancel();
         playerBottom.timer = null;
     }
-
     public void gameRestart(){
         Intent restart = new Intent(this, BotGameActivity.class);
         //the following 2 tags are for clearing the backStack and start fresh
