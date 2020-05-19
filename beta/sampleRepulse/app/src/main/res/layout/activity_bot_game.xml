@@ -44,7 +44,6 @@
         <Button
             android:id="@+id/pauseButton"
             android:layout_width="30dp"
-            android:onClick="pauseGame"
             android:layout_height="30dp"
             android:background="@drawable/pause_button"
             android:layout_gravity="center_vertical"
@@ -98,12 +97,22 @@
             >
 
             <TextView
+                android:id="@+id/scoreLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your score: 0"
+                android:text="Score: "
                 android:textSize="30sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"/>
+
+            <TextView
+                android:id="@+id/bestScoreLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best Score: "
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                />
 
             <Button
                 android:id="@+id/restartButton"
@@ -121,15 +130,21 @@
                 android:text="Exit"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical|end"
+            android:rotation="270"
+            >
+
         <TextView
             android:id="@+id/scoreBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Score: "
-            android:layout_gravity="center_vertical|right"
-            android:rotation="270"
+            android:text="Score: 0"
+            android:layout_gravity="bottom"
             android:textSize="20sp"/>
-
+        </LinearLayout>
     </FrameLayout>
 
 

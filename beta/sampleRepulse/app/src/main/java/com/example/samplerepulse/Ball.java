@@ -25,6 +25,7 @@ public class Ball {
     Bot playerTopBot;
     int playerMarginVertical = 10;
     public int screenWidth, screenHeight;
+    public int hitScore = 0;
 
     TextView text;
 
@@ -128,6 +129,23 @@ public class Ball {
         }
     }
 
+    public void hitScore(){
+        if (ballX + ballSize >= playerBottomBot.playerX &&
+                ballX <= playerBottomBot.playerX + playerBottomBot.plateWidth &&
+                ballY <= screenHeight + ballSize && ballY >= screenHeight)
+        {
+            hitScore += 1;
+            System.out.println("Score is " + hitScore);
+        }
+        else if(ballX + ballSize >= playerTopBot.botX &&
+                ballX <= playerTopBot.botX + playerTopBot.plateWidth &&
+                ballY <= ballSize && ballY >= 0)
+        {
+            hitScore += 1;
+            System.out.println("Score is " + hitScore);
+        }
+    }
+
     public void move2(){
         hitCheck2();
         checkGoalBot();
@@ -178,6 +196,8 @@ public class Ball {
         {
             BotGameActivity.getInstance().addScore();
             ballDirectionY = 1;
+            hitScore += 1;
+            System.out.println("Score is " + hitScore);
             // System.out.println(" hitCheck else");
         }
     }
