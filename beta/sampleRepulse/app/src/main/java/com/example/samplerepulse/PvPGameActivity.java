@@ -1,14 +1,10 @@
 package com.example.samplerepulse;
 
-import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,15 +14,11 @@ import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class PvPGameActivity extends AppCompatActivity {
     private static PvPGameActivity instance;
@@ -54,7 +46,6 @@ public class PvPGameActivity extends AppCompatActivity {
     private Button mainMenuButton, restartButton;
 
     private boolean plateMove = false;
-    private Timer timer, plateTimer;
     private Handler handler;
     private Runnable runnable;
 
@@ -214,27 +205,27 @@ public class PvPGameActivity extends AppCompatActivity {
         boolean playerTopMove = playerTop.plateMove;
 
         if (touchPosY < screenHeight / 2){
-            if(touchPosX < playerTop.playerLeft || touchPosX > playerTop.pLayerRight){
-                if (touchPosX > playerTop.playerX) {
+//            if(touchPosX < playerTop.playerLeft || touchPosX > playerTop.pLayerRight){
+                if (touchPosX > screenWidth / 2) {
                     playerTop.plateDirection = speed;
                 } else {
                     playerTop.plateDirection = -speed;
                 }
                 playerTop.plateMove = true;
-            } else{
-                playerTop.plateMove = false;
-            }
+//            } else{
+//                playerTop.plateMove = false;
+//            }
         }else if (touchPosY > screenHeight / 2){
-            if(touchPosX < playerBottom.playerLeft || touchPosX > playerBottom.pLayerRight){
-                if (touchPosX > playerBottom.playerX) {
+//            if(touchPosX < playerBottom.playerLeft || touchPosX > playerBottom.pLayerRight){
+                if (touchPosX > screenWidth / 2) {
                     playerBottom.plateDirection = speed;
                 } else {
                     playerBottom.plateDirection = -speed;
                 }
                 playerBottom.plateMove = true;
-            } else{
-                playerBottom.plateMove = false;
-            }
+//            } else{
+//                playerBottom.plateMove = false;
+//            }
         }
     }
 
@@ -321,10 +312,5 @@ public class PvPGameActivity extends AppCompatActivity {
         playerBottom.playerX = screenWidth/2 - playerBottom.plateWidth / 2;
         playerBottom.player.setX(playerBottom.playerX);
     }
-
-    public void startGame(){
-        start_flg = true;
-    }
-
 }
 

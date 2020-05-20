@@ -64,9 +64,6 @@ public class BotGameActivity extends AppCompatActivity {
 
     private LinearLayout pauseBoard, gameFinishBoard;
 
-    private Timer timer, plateTimer;
-    private Handler handler;
-
     private TimerHandler timerHandler;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -284,15 +281,11 @@ public class BotGameActivity extends AppCompatActivity {
 
 
     public void pauseGame(){
-//        ball.ballMoving = false;
-//        playerBottom.plateMove = false;
-//        playerTopBot.plateMove = false;
         pauseScore.setText("Score: " + Integer.toString(score));
         pauseBestScore.setText("Best Score: " + Integer.toString(bestScore));
         timerHandler.timerCancel();
-//
+
         pauseBoard.setVisibility(View.VISIBLE);
-//        pauseButton.setVisibility(View.GONE);
 
         pause_flg = true;
     }

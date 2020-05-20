@@ -1,14 +1,9 @@
 package com.example.samplerepulse;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Ball {
     public float ballX, ballY;
@@ -44,28 +39,11 @@ public class Ball {
         System.out.println(ballX +" " + ballY);
 
         setDirection();
-//        startMovePlayer();
     }
 
     public void setTimerHandler(TimerHandler timerHandler){
         this.timerHandler = timerHandler;
     }
-//
-//    public void speedUpPlayer(){
-//        if(this.ballFrameSpeed <= 700) {
-//            this.ballFrameSpeed += 20;
-//            timerHandler.timerCancel();
-//            timerHandler.startTimer();
-//        }
-//    }
-//
-//    public void speedUpBot(){
-//        if(this.ballFrameSpeed <= 700) {
-//            this.ballFrameSpeed += 20;
-//            timerHandler.timerCancel();
-//            timerHandler.startTimer();
-//        }
-//    }
 
     public Ball(ImageView ball, Drawable ballDrawable, Bot playerTopBot, Player playerBottomBot, int screenWidth, int screenHeight){
         this.ball = ball;
@@ -96,42 +74,6 @@ public class Ball {
 
         System.out.println("speedX " + ballXSpeed + " speedY " + ballYSpeed);
     }
-
-//    public void startMovePlayer(){
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() { // move the ball every 20 ms
-//                PvPGameActivity.getInstance().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        System.out.println("Ball Timer");
-//                        if (ballMoving) {
-//                            move();
-//                        }
-//                    }
-//                });
-//            }
-//        }, 0, 1000 / ballFrameSpeed);
-//    }
-
-//    public void startMoveBot(){
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() { // move the ball every 20 ms
-//                BotGameActivity.getInstance().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        System.out.println("Ball Timer");
-//                        if (ballMoving) {
-//                            moveBot();
-//                        }
-//                    }
-//                });
-//            }
-//        }, 0, 1000 / ballFrameSpeed);
-//    }
 
     public void move(){
         hitCheck();

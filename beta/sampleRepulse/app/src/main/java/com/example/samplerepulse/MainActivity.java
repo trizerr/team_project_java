@@ -4,16 +4,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.content.pm.ActivityInfo;
-import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,12 +45,6 @@ public class MainActivity extends AppCompatActivity {
         Intent Bot = new Intent(this, BotGameActivity.class);
         startActivity(Bot);
     }
-
-    public void startGame(){
-
-    }
-
-
 }
 
 

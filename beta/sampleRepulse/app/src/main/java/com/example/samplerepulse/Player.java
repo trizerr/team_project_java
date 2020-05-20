@@ -1,14 +1,7 @@
 package com.example.samplerepulse;
 
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.widget.ImageView;
-
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class Player {
     public float playerX; // player position X
@@ -22,10 +15,8 @@ public class Player {
     private int plateSpeed = 10;
     public int plateSpeedFrame = 50;
     public boolean plateMove = false; // check whether plate need moving
-    public Timer timer;
     public TimerHandler timerHandler;
 
-    private String playerName = "";
 
     public Player(ImageView player, Drawable plate, int screenWidth, int screenHeight){
         this.player = player;
@@ -39,49 +30,23 @@ public class Player {
         this.playerLeft =  playerX - plateWidth/2;
         this.pLayerRight = playerX + plateWidth / 2;
         this.playerCenter = playerX+100;
-
-        //startMove();
     }
-
-//    public void startMove(){
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() { // call move() every 20ms
-//                if (plateMove) {
-//                    move();
-//                }
-//            }
-//        }, 0, 1000 / plateSpeedFrame);
-//    }
 
     public void setTimerHandler(TimerHandler timerHandler){
         this.timerHandler = timerHandler;
     }
 
-//    public void speedUp(){
-//        if(plateSpeedFrame <= 700) {
-//            this.plateSpeedFrame += 10;
-//            timerHandler.timerCancel();
-//            timerHandler.startTimer();
-//        }
-//    }
 
     public void move(){ // move the player
         playerX += plateSpeed * plateDirection;
         playerLeft =  playerX - plateWidth/2;
         pLayerRight = playerX + plateWidth/2;
         if (playerX < 0) { // check wall collision
-//            System.out.println("Collision");
-//            System.out.println("X" + playerX + " Framewidth " + screenWidth + "plateWidth " + plateWidth);
             playerX = 0;
         } else if( playerX > screenWidth - plateWidth){ // check wall collision
             playerX = screenWidth - plateWidth;
         } else{
             player.setX(playerX); // update X position
-//            player.setLeft((int)playerLeft);
-//            player.setRight((int)pLayerRight);
-           // System.out.println("X" + playerX);
         }
     }
 }
