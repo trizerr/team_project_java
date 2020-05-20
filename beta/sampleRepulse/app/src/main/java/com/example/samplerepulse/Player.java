@@ -23,6 +23,7 @@ public class Player {
     public int plateSpeedFrame = 50;
     public boolean plateMove = false; // check whether plate need moving
     public Timer timer;
+    public TimerHandler timerHandler;
 
     private String playerName = "";
 
@@ -39,29 +40,32 @@ public class Player {
         this.pLayerRight = playerX + plateWidth / 2;
         this.playerCenter = playerX+100;
 
-        startMove();
+        //startMove();
     }
 
-    public void startMove(){
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() { // call move() every 20ms
-                if (plateMove) {
-                    move();
-                }
-            }
-        }, 0, 1000 / plateSpeedFrame);
+//    public void startMove(){
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() { // call move() every 20ms
+//                if (plateMove) {
+//                    move();
+//                }
+//            }
+//        }, 0, 1000 / plateSpeedFrame);
+//    }
+
+    public void setTimerHandler(TimerHandler timerHandler){
+        this.timerHandler = timerHandler;
     }
 
-    public void speedUp(){
-        if(plateSpeedFrame <= 700) {
-            this.plateSpeedFrame += 10;
-            this.timer.cancel();
-            this.timer = null;
-            startMove();
-        }
-    }
+//    public void speedUp(){
+//        if(plateSpeedFrame <= 700) {
+//            this.plateSpeedFrame += 10;
+//            timerHandler.timerCancel();
+//            timerHandler.startTimer();
+//        }
+//    }
 
     public void move(){ // move the player
         playerX += plateSpeed * plateDirection;
@@ -80,9 +84,4 @@ public class Player {
            // System.out.println("X" + playerX);
         }
     }
-
-    public void setName(String name){
-        this.playerName = name;
-    }
-
 }

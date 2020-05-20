@@ -38,19 +38,19 @@ public class Bot {
         this.ball = ball;
         this.ballX = ball.ballX;
     }
-
-    public void startMove(){
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Bot Timer");
-                if (plateMove) {
-                    move(ball.ballX);
-                }
-            }
-        }, 0, 20);
-    }
+//
+//    public void startMove(){
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                System.out.println("Bot Timer");
+//                if (plateMove) {
+//                    move(ball.ballX);
+//                }
+//            }
+//        }, 0, 20);
+//    }
 
     public void move(float ballX){
         botX = ballX - (int)(plateWidth / 2 - ball.ballSize / 2);
@@ -60,9 +60,6 @@ public class Bot {
         } else if (botX > screenWidth - plateWidth) { // check wall collision
             botX = screenWidth - plateWidth;
         }
-        player.setX(botX); // update X position
-//            player.setLeft((int)playerLeft);
-//            player.setRight((int)pLayerRight);
-        // System.out.println("X" + playerX);
+        player.setX(botX);
     }
 }

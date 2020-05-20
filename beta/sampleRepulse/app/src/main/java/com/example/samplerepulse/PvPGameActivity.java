@@ -58,6 +58,8 @@ public class PvPGameActivity extends AppCompatActivity {
     private Handler handler;
     private Runnable runnable;
 
+    private TimerHandler timerHandler;
+
     private boolean start_flg = false;
     private boolean action_flg = false;
 
@@ -117,6 +119,14 @@ public class PvPGameActivity extends AppCompatActivity {
                 playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
                 playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
                 ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
+
+                timerHandler = new TimerHandler(ball, playerTop, playerBottom);
+
+                ball.setTimerHandler(timerHandler);
+                playerTop.setTimerHandler(timerHandler);
+                playerBottom.setTimerHandler(timerHandler);
+
+                timerHandler.startTimerPlayer();
             }
         });
 
@@ -178,9 +188,9 @@ public class PvPGameActivity extends AppCompatActivity {
 
     public void addRepulseScore(){
         if (scoreRepulse % 5 == 0){
-            playerTop.speedUp();
-            playerBottom.speedUp();
-            ball.speedUpPlayer();
+            timerHandler.speedUp();
+            timerHandler.timerCancel();
+            timerHandler.startTimerPlayer();
         }
         scoreRepulse += 1;
     }
@@ -254,28 +264,14 @@ public class PvPGameActivity extends AppCompatActivity {
         int playerBottomColor = getResources().getColor(R.color.playerBottom);
 
         if (playerTopScore >= maxScore){
-            playerBottom.timer.cancel();
-            playerBottom.timer = null;
-
-            playerTop.timer.cancel();
-            playerTop.timer = null;
-
-            ball.timer.cancel();
-            ball.timer = null;
+            timerHandler.timerCancel();
 
             pvpResult.setText("Player 2 Win");
             pvpResult.setTextColor(playerTopColor);
 
             resultBoard.setVisibility(View.VISIBLE);
         }else if(playerBottomScore >= maxScore){
-            playerBottom.timer.cancel();
-            playerBottom.timer = null;
-
-            playerTop.timer.cancel();
-            playerTop.timer = null;
-
-            ball.timer.cancel();
-            ball.timer = null;
+            timerHandler.timerCancel();
 
             pvpResult.setText("Player 1 Win");
             pvpResult.setTextColor(playerBottomColor);
@@ -295,14 +291,7 @@ public class PvPGameActivity extends AppCompatActivity {
     }
 
     public void scoreRestart(){
-        ball.timer.cancel();
-        ball.timer = null;
-
-        playerTop.timer.cancel();
-        playerTop.timer = null;
-
-        playerBottom.timer.cancel();
-        playerBottom.timer = null;
+        timerHandler.timerCancel();
 
         setScene();
 
@@ -311,9 +300,7 @@ public class PvPGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Do the task...
-                ball.startMovePlayer();
-                playerTop.startMove();
-                playerBottom.startMove();
+                timerHandler.startTimerPlayer();
                 System.out.println("qwertyuikol;");
             }
         };
@@ -322,18 +309,17 @@ public class PvPGameActivity extends AppCompatActivity {
 
     public void setScene(){
         System.out.println("setScene");
+        timerHandler.frameSpeed = 50;
+
         ball.ballX = screenWidth/2 - ball.ballSize / 2;
         ball.ballY = screenHeight/2 - ball.ballSize / 2;
         ball.setDirection();
-        ball.ballFrameSpeed = 50;
 
         playerTop.playerX = screenWidth/2 - playerTop.plateWidth / 2;
         playerTop.player.setX(playerTop.playerX);
-        playerTop.plateSpeedFrame = 50;
 
         playerBottom.playerX = screenWidth/2 - playerBottom.plateWidth / 2;
         playerBottom.player.setX(playerBottom.playerX);
-        playerBottom.plateSpeedFrame = 50;
     }
 
     public void startGame(){

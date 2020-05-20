@@ -67,6 +67,8 @@ public class BotGameActivity extends AppCompatActivity {
     private Timer timer, plateTimer;
     private Handler handler;
 
+    private TimerHandler timerHandler;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +128,12 @@ public class BotGameActivity extends AppCompatActivity {
                 playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
                 ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottom, screenWidth, screenHeight);
                 playerTopBot.setBall(ball);
-                playerTopBot.startMove();
+
+                timerHandler = new TimerHandler(ball, playerBottom, playerTopBot);
+                timerHandler.startTimerBot();
+
+                ball.setTimerHandler(timerHandler);
+                playerBottom.setTimerHandler(timerHandler);
 
                 playerBottom.plateMove = false;
                 playerTopBot.plateMove = true;
@@ -249,8 +256,9 @@ public class BotGameActivity extends AppCompatActivity {
     public void addScore(){
         score++;
         if (score % 5 == 0){
-            ball.speedUpBot();
-            playerBottom.speedUp();
+            timerHandler.speedUp();
+            timerHandler.timerCancel();
+            timerHandler.startTimerBot();
         }
         scoreBoard.setText("Score: " + Integer.toString(score));
         //System.out.println(score);
@@ -261,15 +269,8 @@ public class BotGameActivity extends AppCompatActivity {
         scoreLabel.setText("Score: " + Integer.toString(score));
         bestScoreLabel.setText("Best Score: " + Integer.toString(bestScore));
         bestScore();
-        if ((ball.timer != null) && (playerTopBot != null) && (playerBottom != null)){
-            ball.timer.cancel();
-            ball.timer = null;
-
-            playerTopBot.timer.cancel();
-            playerTopBot = null;
-
-            playerBottom.timer.cancel();
-            playerBottom.timer = null;
+        if (timerHandler.timer != null) {
+            timerHandler.timerCancel();
         }
     }
     public void gameRestart(){
@@ -288,17 +289,7 @@ public class BotGameActivity extends AppCompatActivity {
 //        playerTopBot.plateMove = false;
         pauseScore.setText("Score: " + Integer.toString(score));
         pauseBestScore.setText("Best Score: " + Integer.toString(bestScore));
-        if ((ball.timer != null) && (playerTopBot != null) && (playerBottom != null)) {
-
-            ball.timer.cancel();
-            ball.timer = null;
-
-            playerTopBot.timer.cancel();
-            playerTopBot.timer = null;
-
-            playerBottom.timer.cancel();
-            playerBottom.timer = null;
-        }
+        timerHandler.timerCancel();
 //
         pauseBoard.setVisibility(View.VISIBLE);
 //        pauseButton.setVisibility(View.GONE);
@@ -307,10 +298,7 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     public void resumeGame(){
-        ball.startMoveBot();
-
-        playerTopBot.startMove();
-        playerBottom.startMove();
+        timerHandler.startTimerBot();
 
         pauseButton.setPressed(false);
         pause_flg = false;

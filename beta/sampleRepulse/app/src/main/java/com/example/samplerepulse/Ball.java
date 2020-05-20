@@ -28,6 +28,7 @@ public class Ball {
     int playerMarginVertical = 10;
     public int screenWidth, screenHeight;
     public int hitScore = 0;
+    TimerHandler timerHandler;
 
     public Ball(ImageView ball, Drawable ballDrawable,Player playerTop, Player playerBottom, int screenWidth, int screenHeight){
         this.ball = ball;
@@ -41,29 +42,30 @@ public class Ball {
         ballX = (float)(screenWidth / 2);
         ballY = (float)(screenHeight / 2);
         System.out.println(ballX +" " + ballY);
-        timer = new Timer();
 
         setDirection();
-        startMovePlayer();
+//        startMovePlayer();
     }
 
-    public void speedUpPlayer(){
-        if(this.ballFrameSpeed <= 700) {
-            this.ballFrameSpeed += 20;
-            timer.cancel();
-            timer = null;
-            startMovePlayer();
-        }
+    public void setTimerHandler(TimerHandler timerHandler){
+        this.timerHandler = timerHandler;
     }
-
-    public void speedUpBot(){
-        if(this.ballFrameSpeed <= 700) {
-            this.ballFrameSpeed += 20;
-            timer.cancel();
-            timer = null;
-            startMoveBot();
-        }
-    }
+//
+//    public void speedUpPlayer(){
+//        if(this.ballFrameSpeed <= 700) {
+//            this.ballFrameSpeed += 20;
+//            timerHandler.timerCancel();
+//            timerHandler.startTimer();
+//        }
+//    }
+//
+//    public void speedUpBot(){
+//        if(this.ballFrameSpeed <= 700) {
+//            this.ballFrameSpeed += 20;
+//            timerHandler.timerCancel();
+//            timerHandler.startTimer();
+//        }
+//    }
 
     public Ball(ImageView ball, Drawable ballDrawable, Bot playerTopBot, Player playerBottomBot, int screenWidth, int screenHeight){
         this.ball = ball;
@@ -77,7 +79,7 @@ public class Ball {
         ballX = (float)(screenWidth / 2);
         ballY = (float)(screenHeight / 2);
         setDirection();
-        startMoveBot();
+//        startMoveBot();
     }
 
     public void setDirection(){
@@ -95,41 +97,41 @@ public class Ball {
         System.out.println("speedX " + ballXSpeed + " speedY " + ballYSpeed);
     }
 
-    public void startMovePlayer(){
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() { // move the ball every 20 ms
-                PvPGameActivity.getInstance().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("Ball Timer");
-                        if (ballMoving) {
-                            move();
-                        }
-                    }
-                });
-            }
-        }, 0, 1000 / ballFrameSpeed);
-    }
+//    public void startMovePlayer(){
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() { // move the ball every 20 ms
+//                PvPGameActivity.getInstance().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        System.out.println("Ball Timer");
+//                        if (ballMoving) {
+//                            move();
+//                        }
+//                    }
+//                });
+//            }
+//        }, 0, 1000 / ballFrameSpeed);
+//    }
 
-    public void startMoveBot(){
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() { // move the ball every 20 ms
-                BotGameActivity.getInstance().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("Ball Timer");
-                        if (ballMoving) {
-                            moveBot();
-                        }
-                    }
-                });
-            }
-        }, 0, 1000 / ballFrameSpeed);
-    }
+//    public void startMoveBot(){
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() { // move the ball every 20 ms
+//                BotGameActivity.getInstance().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        System.out.println("Ball Timer");
+//                        if (ballMoving) {
+//                            moveBot();
+//                        }
+//                    }
+//                });
+//            }
+//        }, 0, 1000 / ballFrameSpeed);
+//    }
 
     public void move(){
         hitCheck();
