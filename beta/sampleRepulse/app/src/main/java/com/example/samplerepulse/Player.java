@@ -20,6 +20,7 @@ public class Player {
 
     public int plateDirection = 1; // plate Direction 1 - right, (-1) - left
     private int plateSpeed = 10;
+    public int plateSpeedFrame = 50;
     public boolean plateMove = false; // check whether plate need moving
     public Timer timer;
 
@@ -50,7 +51,16 @@ public class Player {
                     move();
                 }
             }
-        }, 0, 20);
+        }, 0, 1000 / plateSpeedFrame);
+    }
+
+    public void speedUp(){
+        if(plateSpeedFrame <= 700) {
+            this.plateSpeedFrame += 10;
+            this.timer.cancel();
+            this.timer = null;
+            startMove();
+        }
     }
 
     public void move(){ // move the player

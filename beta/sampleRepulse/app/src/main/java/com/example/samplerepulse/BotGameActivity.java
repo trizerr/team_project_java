@@ -71,8 +71,6 @@ public class BotGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_game);
 
-//        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE); //для bestSCORE
-
         instance = this;
 
         settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
@@ -89,20 +87,6 @@ public class BotGameActivity extends AppCompatActivity {
 
         pauseScore = findViewById(R.id.pauseBoardScore);
         pauseBestScore = findViewById(R.id.pauseBoardBestScore);
-
-          //bestSCORE P.S. це вже є в вигляді функції
-
-//        bestScoreLabel = findViewById(R.id.bestScore);
-//        int bestScore = settings.getInt("best_SCORE", 0);
-//        if (score > bestScore) {
-//           bestScoreLabel.setText("best Score: " + score);
-//
-//            SharedPreferences.Editor editor = settings.edit();
-//            editor.putInt("best_SCORE", score);
-//            editor.commit();
-//        }else {
-//            bestScoreLabel.setText("best Score: " + bestScore);
-//        }
 
         pauseButton =  findViewById(R.id.pauseButton);
         resumeButton = findViewById(R.id.resumeButton);
@@ -124,20 +108,27 @@ public class BotGameActivity extends AppCompatActivity {
 
         action_flg = true;
         plateMove = true;
-
-        playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottom, screenWidth, screenHeight);
-
-        playerTopBot.setBall(ball);
-        playerTopBot.startMove();
-
-        playerBottom.plateMove = false;
-        playerTopBot.plateMove = true;
-
-        gameFinishBoard.setVisibility(View.GONE);
-
         addListeners();
+
+
+        gameFrame.post(new Runnable() {
+            @Override
+            public void run() {
+                screenHeight = (int)playerBottomImg.getY() - plate.getIntrinsicHeight();
+                System.out.println("Height " + screenHeight);
+                action_flg = true;
+                plateMove = false;
+
+                playerTopBot = new Bot(playerTopImg, plate, screenWidth, screenHeight);
+                playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+                ball = new Ball(ballImg, ballDrawable,playerTopBot, playerBottom, screenWidth, screenHeight);
+                playerTopBot.setBall(ball);
+                playerTopBot.startMove();
+
+                playerBottom.plateMove = false;
+                playerTopBot.plateMove = true;
+            }
+        });
     }
 
     public void addListeners(){
@@ -254,6 +245,10 @@ public class BotGameActivity extends AppCompatActivity {
 
     public void addScore(){
         score++;
+        if (score % 5 == 0){
+            ball.speedUpBot();
+            playerBottom.speedUp();
+        }
         scoreBoard.setText("Score: " + Integer.toString(score));
         //System.out.println(score);
     }
@@ -309,7 +304,8 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     public void resumeGame(){
-        ball.startMove();
+        ball.startMoveBot();
+
         playerTopBot.startMove();
         playerBottom.startMove();
 

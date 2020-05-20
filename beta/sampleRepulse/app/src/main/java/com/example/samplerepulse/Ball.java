@@ -1,5 +1,6 @@
 package com.example.samplerepulse;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -13,6 +14,7 @@ public class Ball {
     public float ballX, ballY;
     public int ballXSpeed = 5; // change x position
     public int ballYSpeed = 10; // change y position
+    public int ballFrameSpeed = 50;
     public int ballDirectionX = 0;
     public int ballDirectionY = 0;
     public int ballSize;
@@ -26,8 +28,6 @@ public class Ball {
     int playerMarginVertical = 10;
     public int screenWidth, screenHeight;
     public int hitScore = 0;
-    public int plateMargin;
-    TextView text;
 
     public Ball(ImageView ball, Drawable ballDrawable,Player playerTop, Player playerBottom, int screenWidth, int screenHeight){
         this.ball = ball;
@@ -44,19 +44,25 @@ public class Ball {
         timer = new Timer();
 
         setDirection();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() { // move the ball every 20 ms
-                PvPGameActivity.getInstance().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (ballMoving) {
-                            move();
-                        }
-                    }
-                });
-            }
-        }, 0, 20);
+        startMovePlayer();
+    }
+
+    public void speedUpPlayer(){
+        if(this.ballFrameSpeed <= 700) {
+            this.ballFrameSpeed += 20;
+            timer.cancel();
+            timer = null;
+            startMovePlayer();
+        }
+    }
+
+    public void speedUpBot(){
+        if(this.ballFrameSpeed <= 700) {
+            this.ballFrameSpeed += 20;
+            timer.cancel();
+            timer = null;
+            startMoveBot();
+        }
     }
 
     public Ball(ImageView ball, Drawable ballDrawable, Bot playerTopBot, Player playerBottomBot, int screenWidth, int screenHeight){
@@ -70,7 +76,8 @@ public class Ball {
 
         ballX = (float)(screenWidth / 2);
         ballY = (float)(screenHeight / 2);
-        startMove();
+        setDirection();
+        startMoveBot();
     }
 
     public void setDirection(){
@@ -86,11 +93,27 @@ public class Ball {
         this.ballYSpeed = (int) (Math.random() * 3) + 8;
 
         System.out.println("speedX " + ballXSpeed + " speedY " + ballYSpeed);
-
     }
 
-    public void startMove(){
-        setDirection();
+    public void startMovePlayer(){
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() { // move the ball every 20 ms
+                PvPGameActivity.getInstance().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("Ball Timer");
+                        if (ballMoving) {
+                            move();
+                        }
+                    }
+                });
+            }
+        }, 0, 1000 / ballFrameSpeed);
+    }
+
+    public void startMoveBot(){
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -100,12 +123,12 @@ public class Ball {
                     public void run() {
                         System.out.println("Ball Timer");
                         if (ballMoving) {
-                            move2();
+                            moveBot();
                         }
                     }
                 });
             }
-        }, 0, 20);
+        }, 0, 1000 / ballFrameSpeed);
     }
 
     public void move(){
@@ -148,25 +171,8 @@ public class Ball {
         }
     }
 
-    public void hitScore(){
-        if (ballX + ballSize >= playerBottomBot.playerX &&
-                ballX <= playerBottomBot.playerX + playerBottomBot.plateWidth &&
-                ballY <= screenHeight + ballSize && ballY >= screenHeight)
-        {
-            hitScore += 1;
-            System.out.println("Score is " + hitScore);
-        }
-        else if(ballX + ballSize >= playerTopBot.botX &&
-                ballX <= playerTopBot.botX + playerTopBot.plateWidth &&
-                ballY <= ballSize && ballY >= 0)
-        {
-            hitScore += 1;
-            System.out.println("Score is " + hitScore);
-        }
-    }
-
-    public void move2(){
-        hitCheck2();
+    public void moveBot(){
+        hitCheckBot();
         checkGoalBot();
         ballX += ballXSpeed * ballDirectionX;
         ballY += ballYSpeed * ballDirectionY;
@@ -184,23 +190,25 @@ public class Ball {
     }
 
     public void hitCheck(){ // check ball collision with players
-        //System.out.println("hitCheck");
+
         if (ballX + ballSize >= playerBottom.playerX &&
                 ballX <= playerBottom.playerX + playerBottom.plateWidth &&
                 ballY <= screenHeight + ballSize && ballY >= screenHeight)
         {
-            ballDirectionY = -1;
+            ballDirectionY = -1 ;
+            PvPGameActivity.getInstance().addRepulseScore();
         }
         else if(ballX + ballSize >= playerTop.playerX &&
                 ballX <= playerTop.playerX + playerTop.plateWidth &&
                 ballY <= ballSize && ballY >= 0)
         {
             ballDirectionY = 1;
-           // System.out.println(" hitCheck else");
+            PvPGameActivity.getInstance().addRepulseScore();
+            // System.out.println(" hitCheck else");
         }
     }
 
-    public void hitCheck2(){ // check ball collision with players
+    public void hitCheckBot(){ // check ball collision with players
         //System.out.println("hitCheck");
         if (ballX + ballSize >= playerBottomBot.playerX &&
                 ballX <= playerBottomBot.playerX + playerBottomBot.plateWidth &&
@@ -215,7 +223,6 @@ public class Ball {
         {
             BotGameActivity.getInstance().addScore();
             ballDirectionY = 1;
-            hitScore += 1;
             System.out.println("Score is " + hitScore);
             // System.out.println(" hitCheck else");
         }

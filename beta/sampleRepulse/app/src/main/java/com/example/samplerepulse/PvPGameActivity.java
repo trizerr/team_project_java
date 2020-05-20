@@ -1,5 +1,6 @@
 package com.example.samplerepulse;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -16,6 +17,7 @@ import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,6 +38,7 @@ public class PvPGameActivity extends AppCompatActivity {
     private int speed = 1;
     private int playerTopScore, playerBottomScore;
     private int maxScore = 3;
+    private int scoreRepulse = 0;
 
     private Player playerTop, playerBottom;
     private Ball ball;
@@ -95,17 +98,26 @@ public class PvPGameActivity extends AppCompatActivity {
         plate = getDrawable(R.drawable.plate);
         ballDrawable = getDrawable(R.drawable.ball);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+        final DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
-        screenHeight = displayMetrics.heightPixels;
+        System.out.println("Display height" + displayMetrics.heightPixels);
 
-        action_flg = true;
-        plateMove = false;
+        final View mainFrame = findViewById(R.id.mainFrame);
+        mainFrame.post(new Runnable() {
+            @Override
+            public void run() {
+                screenHeight = (int)playerBottomImg.getY() - plate.getIntrinsicHeight();
+                System.out.println("Height " + screenHeight);
+                action_flg = true;
+                plateMove = false;
 
-        playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
-        playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
-        ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
+                playerTop = new Player(playerTopImg, plate, screenWidth, screenHeight);
+                playerBottom = new Player(playerBottomImg, plate, screenWidth, screenHeight);
+                ball = new Ball(ballImg, ballDrawable,playerTop, playerBottom, screenWidth, screenHeight);
+            }
+        });
+
     }
 
     public static PvPGameActivity getInstance(){
@@ -160,6 +172,15 @@ public class PvPGameActivity extends AppCompatActivity {
         }
 
         return super.onTouchEvent(event);
+    }
+
+    public void addRepulseScore(){
+        if (scoreRepulse % 5 == 0){
+            playerTop.speedUp();
+            playerBottom.speedUp();
+            ball.speedUpPlayer();
+        }
+        scoreRepulse += 1;
     }
 
     public void Up(MotionEvent event){
@@ -218,14 +239,12 @@ public class PvPGameActivity extends AppCompatActivity {
         playerTopScore++;
         playerTopScoreText.setText(Integer.toString(playerTopScore));
         checkScore();
-        scoreRestart();
     }
 
     public void playerBottomScore(){
         playerBottomScore++;
         playerBottomScoreText.setText(Integer.toString(playerBottomScore));
         checkScore();
-        scoreRestart();
     }
 
     public void checkScore(){
@@ -234,8 +253,13 @@ public class PvPGameActivity extends AppCompatActivity {
 
         if (playerTopScore >= maxScore){
             playerBottom.timer.cancel();
+            playerBottom.timer = null;
+
             playerTop.timer.cancel();
+            playerTop.timer = null;
+
             ball.timer.cancel();
+            ball.timer = null;
 
             pvpResult.setText("Player 2 Win");
             pvpResult.setTextColor(playerTopColor);
@@ -243,13 +267,20 @@ public class PvPGameActivity extends AppCompatActivity {
             resultBoard.setVisibility(View.VISIBLE);
         }else if(playerBottomScore >= maxScore){
             playerBottom.timer.cancel();
+            playerBottom.timer = null;
+
             playerTop.timer.cancel();
+            playerTop.timer = null;
+
             ball.timer.cancel();
+            ball.timer = null;
 
             pvpResult.setText("Player 1 Win");
             pvpResult.setTextColor(playerBottomColor);
 
             resultBoard.setVisibility(View.VISIBLE);
+        }else{
+            scoreRestart();
         }
     }
 
@@ -262,9 +293,15 @@ public class PvPGameActivity extends AppCompatActivity {
     }
 
     public void scoreRestart(){
-        ball.ballMoving = false;
-        playerTop.plateMove = false;
-        playerBottom.plateMove = false;
+        ball.timer.cancel();
+        ball.timer = null;
+
+        playerTop.timer.cancel();
+        playerTop.timer = null;
+
+        playerBottom.timer.cancel();
+        playerBottom.timer = null;
+
         setScene();
 
         handler = new Handler(Looper.getMainLooper());
@@ -272,7 +309,9 @@ public class PvPGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Do the task...
-                ball.ballMoving = true;
+                ball.startMovePlayer();
+                playerTop.startMove();
+                playerBottom.startMove();
                 System.out.println("qwertyuikol;");
             }
         };
@@ -284,12 +323,15 @@ public class PvPGameActivity extends AppCompatActivity {
         ball.ballX = screenWidth/2 - ball.ballSize / 2;
         ball.ballY = screenHeight/2 - ball.ballSize / 2;
         ball.setDirection();
+        ball.ballFrameSpeed = 50;
 
         playerTop.playerX = screenWidth/2 - playerTop.plateWidth / 2;
         playerTop.player.setX(playerTop.playerX);
+        playerTop.plateSpeedFrame = 50;
 
         playerBottom.playerX = screenWidth/2 - playerBottom.plateWidth / 2;
         playerBottom.player.setX(playerBottom.playerX);
+        playerBottom.plateSpeedFrame = 50;
     }
 
     public void startGame(){
