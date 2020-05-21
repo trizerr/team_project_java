@@ -52,13 +52,14 @@
 
         <LinearLayout
             android:id="@+id/pauseBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="@drawable/menu_layout"
-            android:layout_marginVertical="150dp"
-            android:layout_marginHorizontal="50dp"
             android:orientation="vertical"
             android:visibility="gone"
+            android:paddingVertical="50dp"
+            android:paddingHorizontal="40dp"
             >
 
             <TextView
@@ -68,7 +69,7 @@
                 android:text="@string/score"
                 android:textSize="30sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"/>
+                />
 
             <TextView
                 android:id="@+id/pauseBoardBestScore"
@@ -96,11 +97,12 @@
 
         <LinearLayout
             android:id="@+id/gameFinishBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="@drawable/menu_layout"
-            android:layout_marginVertical="150dp"
-            android:layout_marginHorizontal="50dp"
+            android:paddingVertical="50dp"
+            android:paddingHorizontal="40dp"
             android:orientation="vertical"
             android:visibility="gone"
             >
@@ -112,7 +114,7 @@
                 android:text="@string/score"
                 android:textSize="30sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"/>
+                />
 
             <TextView
                 android:id="@+id/bestScoreLabel"

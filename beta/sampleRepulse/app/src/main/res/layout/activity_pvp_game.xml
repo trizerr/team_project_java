@@ -74,11 +74,10 @@
 
         <LinearLayout
             android:id="@+id/resultBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginVertical="175dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_gravity="center"
             android:visibility="gone"
             android:background="@drawable/menu_layout">
 
@@ -86,9 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginVertical="0dp"
                 android:orientation="vertical"
-android:paddingVertical="100dp"
+                android:paddingVertical="75dp"
+                android:paddingHorizontal="40dp"
             >
 
                 <TextView
@@ -96,7 +95,7 @@ android:paddingVertical="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
+                    android:paddingBottom="10dp"
                     android:text="Player 1 Win"
                     android:textSize="30sp"/>
 
